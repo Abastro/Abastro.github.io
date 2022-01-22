@@ -32,48 +32,116 @@
         <blockquote>
 <p><em>함수형에 별로 관심이 없으신 줄 알았는데, 의외로 관심있으신 분들이 꽤 계셨습니다. 그분들을 위해 Optics가 무엇인지 설명을 해 보고자 합니다.</em></p>
 </blockquote>
+<blockquote>
+<p><em>이 글은 함수형에 익숙한 분들을 위해 작성되었습니다.</em></p>
+</blockquote>
+<blockquote>
+<p><em>설명을 위해 Scala를 사용하지만, 컴파일이 안 된 코드입니다. 직접 구현해 보시려면, Typeclass를 작성하는 방향으로 작업하시면 됩니다.</em></p>
+</blockquote>
+<blockquote>
+<p><em>법칙은 설명하지 않습니다.</em></p>
+</blockquote>
 <p>우리는 자료구조를 가로지르며 연산을 하는 경우가 많은데요. 간단하게는 for문으로부터 시작해서 트리 순회(tree traversal)까지 다양한 경우가 있죠.</p>
 <p>여기선 함수형이 이 문제들을 어떻게 접근하는지 알아보려 합니다.</p>
 <hr />
 <h1 id="개요">개요</h1>
-<p>우리가 자료구조를 가로지르며 작업을 할 때에는, 보통 일부 원소를 가져와서 각각에 대해 작업을 진행합니다.</p>
-<p>이렇게 접근하는 작업은 종류에 따라 다양하지만, 대부분의 경우 연산 1~2개로 구현이 가능합니다.</p>
-<p>다음과 같은 경우를 생각해 봅시다.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> <span class="kw">class</span> <span class="fu">Foo</span><span class="op">(</span>B b<span class="op">,</span> C c<span class="op">,</span> D d<span class="op">)</span></span></code></pre></div>
-<p>여기서, get과 set만 있으면 <code>B b</code> 에 접근하여 어떤 작업도 구현이 가능할 겁니다.</p>
+<p>우리가 자료구조를 가로지르며 작업을 할 때에는, 보통 일부 원소를 가져와서 각각의 원소에 대해 작업을 진행합니다.</p>
+<p>이렇게 접근하는 작업은 종류에 따라 다양하지만, 대부분의 경우 연산 1~2개로 커버가 됩니다.</p>
+<p>예를 들어 다음 구조체를 봅시다.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> <span class="kw">class</span> <span class="fu">Foo</span><span class="op">(</span>B b<span class="op">,</span> C c<span class="op">,</span> D d<span class="op">)</span></span></code></pre></div>
+<p>여기서 get과 set만 있으면 <code>B b</code> 에 접근하여 어떤 작업도 구현이 가능할 겁니다.</p>
 <p>이 get과 set을 하나로 모아서, 필드로서의 개념을 encapsulate하는 접근자를 만들 수 있습니다. 함수형으로는 다음과 같이 됩니다:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> <span class="kw">class</span> <span class="fu">LensFooB</span><span class="op">(</span>get<span class="op">:</span> Foo <span class="op">=&gt;</span> B<span class="op">,</span> set<span class="op">:</span> B <span class="op">=&gt;</span> Foo <span class="op">=&gt;</span> Foo<span class="op">)</span></span></code></pre></div>
-<p>이렇게 다루는 방식을 Optics라 합니다.</p>
-<p>물론 이뿐 아니라 <code>B b1, B b2, C c, D d</code> 같이 B가 여럿 있는 경우도 다른 Optics를 사용하여 가로지를 수 있는데, 이것은 나중에 설명하도록 하겠습니다.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> <span class="kw">class</span> <span class="fu">LensFooB</span><span class="op">(</span>get<span class="op">:</span> Foo <span class="op">=&gt;</span> B<span class="op">,</span> set<span class="op">:</span> B <span class="op">=&gt;</span> Foo <span class="op">=&gt;</span> Foo<span class="op">)</span></span></code></pre></div>
+<p>get은 해당 필드를 가져오는 함수, set은 해당 필드를 변경한 값을 돌려주는 함수입니다.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> lensFooB <span class="op">:</span> LensFooB <span class="op">=</span> <span class="op">???</span> <span class="co">// Omitted</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> foo <span class="op">=</span> <span class="fu">Foo</span> <span class="op">(</span>b<span class="op">,</span> c<span class="op">,</span> d<span class="op">)</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  lensFooB<span class="op">.</span><span class="fu">get</span> <span class="op">(</span>foo<span class="op">)</span> <span class="op">==</span> b</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  lensFooB<span class="op">.</span><span class="fu">set</span> <span class="op">(</span>b2<span class="op">)</span> <span class="op">(</span>foo<span class="op">)</span> <span class="op">==</span> <span class="fu">Foo</span> <span class="op">(</span>b2<span class="op">,</span> c<span class="op">,</span> d<span class="op">)</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  foo <span class="op">==</span> <span class="fu">Foo</span> <span class="op">(</span>b<span class="op">,</span> c<span class="op">,</span> d<span class="op">)</span> <span class="co">// No mutation</span></span></code></pre></div>
+<p>특히, 함수형에서는 값에 변화를 주는 것을 싫어하므로, Foo를 shallow-copy 방식으로 복사하여 해당 필드만 수정한 새로운 값을 돌려주게 됩니다.</p>
+<p>이렇게 접근자를 따로 빼내어 <em>first-class</em>로서 다루는 방식을 Lens, 이를 일반화하여 순회 방식으로 연산하는 방식을 Optics라고 부릅니다.</p>
 <p>Optics를 이용하면, 명시적으로 필요한 접근자만 밖으로 드러나게 하거나 새로운 접근자를 만들어 마치 field가 있는 것처럼 꾸미는 것이 가능합니다.</p>
-<p>한편, Optics는 기존의 데이터를 변하게 하지 않고, 새로운 데이터를 만드는 방식을 채택합니다.</p>
-<p>예를 들어 <code>S s</code>를 변경하여 또 다른 <code>S s2 = lensB.set (b) (s)</code> 가 나오는 식이죠.</p>
-<p>장단점이 있습니다만 여기서 기술하지는 않겠습니다.</p>
-<p>(참고로, 전체를 deep-copy하지는 않고 B로 가는 reference만 바꾼 새로운 S객체를 반환하게 됩니다)</p>
 <hr />
 <h1 id="표현">표현</h1>
 <p>일반적으로, Optics는 2가지로 표현할 수 있습니다.</p>
 <h2 id="일반적인-표현법">일반적인 표현법</h2>
 <p>선술했던 get/set을 이용하는 방법이 이에 해당합니다. 다음과 같이 표현할 수 있죠.</p>
-<p><code>case class Lens[S, A](get : S =&gt; A, set: A =&gt; S =&gt; S)</code></p>
-<p>이렇게 직관적으로 간단한 표현법을 사용할 수 있습니다.</p>
-<p>어떤 연산이 있는지 등의 구체적인 부분은 분류에서 설명하겠습니다.</p>
-<h2 id="van-laarhoven-표현법">Van Laarhoven 표현법</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> <span class="kw">class</span> LensS<span class="op">[</span>S<span class="op">,</span> A<span class="op">](</span>get <span class="op">:</span> S <span class="op">=&gt;</span> A<span class="op">,</span> set<span class="op">:</span> A <span class="op">=&gt;</span> S <span class="op">=&gt;</span> S<span class="op">)</span></span></code></pre></div>
+<p>이렇게 직관적으로 간단한 표현법을 사용할 수 있습니다. 허나, 이 방식이 모든 Optics에 대해 적용되는 건 아닙니다.</p>
+<h2 id="profunctor-표현법">Profunctor 표현법</h2>
+<h3 id="동기">동기</h3>
 <p>하지만, 위 방법으로는 합성이 어려워지고, 앞으로 보게 될 유사성도 포착하기 어렵습니다.</p>
 <p>예를 들어, <code>S</code>에 <code>A a</code>라는 원소가 있고, <code>A</code>에 <code>B b</code>라는 원소가 있는 경우를 생각해 봅시다.</p>
-<p>그렇다면, B를 set해주기 위해서는 다음과 같이 해줘야 합니다:</p>
-<p><code>S s2 =</code></p>
-<p>이렇게 합성이 어려운 경우에는 문제가 있겠죠. 이를 보완하기 위해 다른 표현 방법이 있습니다.</p>
-<p>일단, 각각의 원소에 작업을 어떻게 하는지를 추상화합시다.</p>
-<p>어떤 타입 <code>A</code>를 가져와, 작업을 하고, 다른 <code>A</code>로 바꾸면 되겠죠? 이것은 각각의 원소에 대해 반복하면 됩니다.</p>
-<p>어떻게 하면 될까요?</p>
-<p><code>type Optics[P, S, A] = P[A, A] =&gt; P[S, S]</code></p>
+<p>그렇다면, <code>B</code>를 <code>b2</code>로 설정해주기 위해서는 다음과 같이 해줘야 합니다:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> A a2 <span class="op">=</span> lensAB<span class="op">.</span><span class="fu">set</span> <span class="op">(</span>b2<span class="op">)</span> <span class="op">(</span>lensSA<span class="op">.</span><span class="fu">get</span> <span class="op">(</span>s<span class="op">))</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> S s2 <span class="op">=</span> lensSA<span class="op">.</span><span class="fu">set</span> <span class="op">(</span>a2<span class="op">)</span> <span class="op">(</span>s<span class="op">)</span></span></code></pre></div>
+<p>여기서 3단계로 중복이 되면 더 복잡해집니다.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> B b2 <span class="op">=</span> lensBC<span class="op">.</span><span class="fu">set</span> <span class="op">(</span>c2<span class="op">)</span> <span class="op">(</span>lensAB<span class="op">.</span><span class="fu">get</span> <span class="op">(</span>lensSA<span class="op">.</span><span class="fu">get</span> <span class="op">(</span>s<span class="op">)))</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> A a2 <span class="op">=</span> lensAB<span class="op">.</span><span class="fu">set</span> <span class="op">(</span>b2<span class="op">)</span> <span class="op">(</span>lensSA<span class="op">.</span><span class="fu">get</span> <span class="op">(</span>s<span class="op">))</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> S s2 <span class="op">=</span> lensSA<span class="op">.</span><span class="fu">set</span> <span class="op">(</span>a2<span class="op">)</span> <span class="op">(</span>s<span class="op">)</span></span></code></pre></div>
+<p>복잡해서 읽기도 힘들고, 스케일이 커질수록 문제가 커지네요. 저도 쓰기 힘들었습니다;;;</p>
+<p>바로 이 단점을 보완할 뿐 아니라, 일반적으로 더 많은 사용법을 포괄하는 표현법이 있습니다.</p>
+<h3 id="작업하기---profunctor">작업하기 - Profunctor</h3>
+<p>일단, 각각의 원소에 작업을 어떻게 하는지를 추상화해 봅시다.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> <span class="kw">class</span> <span class="fu">Foo</span><span class="op">(</span>Bar bar<span class="op">,</span> Baz baz<span class="op">)</span></span></code></pre></div>
+<p>여기서 <code>Foo</code> 내부의 <code>Bar bar</code>에 작업을 하려면, 필드 <code>bar</code>에 적용할 작업이 필요합니다. 이 작업을 <code>taskBar</code>라고 불러봅시다.</p>
+<p><code>taskBar</code>는 <code>bar</code> 필드를 다른 값으로 바꿔줄 수 있어야 하기 때문에, 새로운 값 <code>Bar bar2</code>을 돌려줄 수도 있어야 하겠죠.</p>
+<p>그러면 <code>taskBar</code>의 타입은 다음과 같이 상상할 수 있습니다.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> taskBar <span class="op">:</span> Bar <span class="op">=&gt;</span> Bar</span></code></pre></div>
+<p>하지만 이런 작업은 부가작용(side effect)을 표현하지 못할 뿐더러, <code>get</code>을 구현하기에도 애매모호합니다.</p>
+<p>그럼 <code>F</code>라는 펑터(Functor)를 이용해 부가작용을 할 수 있게 해봅시다.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> taskBar <span class="op">:</span> Bar <span class="op">=&gt;</span> F<span class="op">[</span>Bar<span class="op">]</span></span></code></pre></div>
+<p>사실 이 정도에서 끊어도 되지만, Prism을 설명하기 위해 한 단계 더 가보겠습니다.</p>
+<p>단순 작업을 생각하면, 기존 <code>Bar</code>값이 필요하지 않은 경우도 있습니다. 특히 <code>Bar</code>객체의 값을 새로 만들어 내는 경우엔 위 방법이 통하지 않겠죠.</p>
+<p>이 경우를 커버하기 위해서, 함수를 일반화한 개념인 <code>Profunctor</code>가 등장합니다.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> taskBar <span class="op">:</span> P<span class="op">[</span>Bar<span class="op">,</span> Bar<span class="op">]</span></span></code></pre></div>
+<p>P가 다음과 같은 조건을 만족하는 경우, <code>Profunctor</code>라고 부릅니다:</p>
+<p>P는 타입 2개를 받는 Type Constructor이어야 하고, 첫번째 인자엔 반-Functor로, 두번째 인자엔 Functor로 동작합니다(???)…</p>
+<p>무슨 말인고 하니, 다음과 같이 input과 output에 함수를 이어줄 수 있다는 겁니다.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> inputFn <span class="op">:</span> Dog <span class="op">=&gt;</span> Bus    <span class="co">// Function</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> busToCar <span class="op">:</span> P<span class="op">[</span>Bus<span class="op">,</span> Car<span class="op">]</span>  <span class="co">// P</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> outputFn <span class="op">:</span> Car <span class="op">=&gt;</span> Cat   <span class="co">// Function</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> dogToCat <span class="op">:</span> P<span class="op">[</span>Dog<span class="op">,</span> Cat<span class="op">]</span> <span class="op">=</span> <span class="fu">dimap</span> <span class="op">(</span>inputFn<span class="op">)</span> <span class="op">(</span>outputFn<span class="op">)</span> <span class="op">(</span>busToCar<span class="op">)</span></span></code></pre></div>
+<p>함수 합성과 비슷하네요. 다만 P끼리는 잇지 못합니다.</p>
+<p>다음과 같이 trait을 통해 P에 대한 제약조건으로 만들어 줄 수 있습니다.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">trait</span> Profunctor<span class="op">[</span>P<span class="op">[</span>_<span class="op">,</span> _<span class="op">]]</span> <span class="op">{</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> dimap<span class="op">[</span>S<span class="op">,</span> T<span class="op">,</span> A<span class="op">,</span> B<span class="op">]</span> <span class="op">(</span>inFn<span class="op">:</span> S <span class="op">=&gt;</span> A<span class="op">)</span> <span class="op">(</span>outFn<span class="op">:</span> B <span class="op">=&gt;</span> T<span class="op">)</span> <span class="op">:</span> P<span class="op">[</span>A<span class="op">,</span> B<span class="op">]</span> <span class="op">=&gt;</span> P<span class="op">[</span>S<span class="op">,</span> T<span class="op">]</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span></code></pre></div>
+<p>이제 작업 <code>taskBar: P[Bar, Bar]</code>을 정의했으니, 이를 <code>P[Foo, Foo]</code>로 승격시켜줄 필요가 있겠죠?</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">type</span> OpticS<span class="op">[</span>P<span class="op">,</span> Foo<span class="op">,</span> Bar<span class="op">]</span> <span class="op">=</span> P<span class="op">[</span>Bar<span class="op">,</span> Bar<span class="op">]</span> <span class="op">=&gt;</span> P<span class="op">[</span>Foo<span class="op">,</span> Foo<span class="op">]</span></span></code></pre></div>
+<p>이렇게 부분에 한정된 작업을 전체로 승격시키는 함수를 Optic이라 합니다.</p>
+<p>Optic은 함수이므로, 다음과 같이 <strong>손쉽게 합성이 가능합니다.</strong></p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> pFooBar<span class="op">:</span> OpticS<span class="op">[</span>P<span class="op">,</span> Foo<span class="op">,</span> Bar<span class="op">]</span> <span class="co">// Bar is inside Foo</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> pBarBaz<span class="op">:</span> OpticS<span class="op">[</span>P<span class="op">,</span> Bar<span class="op">,</span> Baz<span class="op">]</span> <span class="co">// Baz is inside Bar</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> pFooBaz<span class="op">:</span> OpticS<span class="op">[</span>P<span class="op">,</span> Foo<span class="op">,</span> Baz<span class="op">]</span> <span class="op">=</span> pFooBar compose pBarBaz</span></code></pre></div>
+<h3 id="자료구조에-할-수-있는-작업">자료구조에 할 수 있는 작업</h3>
+<p>자료구조 입장에서는, encapsulation을 위해 가능한 작업에 제약을 걸어줘야 하는 일이 생깁니다.</p>
+<p>이를 위해 <code>Optics</code>의 경우에는 작업 <code>P</code>에 제약을 걸게 되죠.</p>
+<p>예를 들어, <code>lensFooBar</code>는 다음과 같이 표현됩니다.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Strong has Profunctor as its superclass</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> lensFooBar<span class="op">[</span>P<span class="op">[</span>_<span class="op">,</span> _<span class="op">]:</span> Strong<span class="op">]</span> <span class="op">:</span> OpticS<span class="op">[</span>P<span class="op">,</span> Foo<span class="op">,</span> Bar<span class="op">]</span></span></code></pre></div>
+<p>보시듯이 <code>Strong</code>이라는 제약조건이 들어가 있습니다. (이게 무엇인지는 후술할 예정입니다)</p>
+<p>이렇게 <code>lensFooBar</code>처럼 제약조건을 포함한 개념을 Optics 접근자라 부릅니다.</p>
+<p>어떤 제약조건이 붙는지에 따라서 분류도 가능한데, 다형성을 먼저 다루고 설명해 보겠습니다.</p>
 <h2 id="다형성">다형성</h2>
 <p>가끔 다형성을 지닌 자료구조에 원소의 타입을 변경하며 가로질러야 할 때도 있습니다.</p>
-<p>간단히 List타입 생성자를 생각해보죠.</p>
+<p>간단히 List타입을 생각해 보죠.</p>
+<p><code>Car =&gt; Bus</code>라는 함수를 적용해 바꿔주는 연산을 하면, <code>List[Car]</code>은 <code>List[Bus]</code>가 되어야 합니다.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> listMap <span class="op">:</span> <span class="op">(</span>Car <span class="op">=&gt;</span> Bus<span class="op">)</span> <span class="op">=&gt;</span> <span class="op">(</span><span class="ex">List</span><span class="op">[</span>Car<span class="op">]</span> <span class="op">=&gt;</span> <span class="ex">List</span><span class="op">[</span>Bus<span class="op">])</span></span></code></pre></div>
+<p>이 경우도 고려하도록 만들어 줄 수 있을까요? <code>Optics</code> 타입의 정의를 생각해 봅시다.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">type</span> Optics<span class="op">[</span>P<span class="op">,</span> Foo<span class="op">,</span> Bar<span class="op">]</span> <span class="op">=</span> P<span class="op">[</span>Bar<span class="op">,</span> Bar<span class="op">]</span> <span class="op">=&gt;</span> P<span class="op">[</span>Foo<span class="op">,</span> Foo<span class="op">]</span></span></code></pre></div>
+<p><code>P</code>의 input과 output 타입이 같았었죠? 이걸 달리해 주면 어떻게 될까요?</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">type</span> Optics<span class="op">[</span>P<span class="op">,</span> S1<span class="op">,</span> S2<span class="op">,</span> A1<span class="op">,</span> A2<span class="op">]</span> <span class="op">=</span> P<span class="op">[</span>A1<span class="op">,</span> A2<span class="op">]</span> <span class="op">=&gt;</span> P<span class="op">[</span>S1<span class="op">,</span> S2<span class="op">]</span></span></code></pre></div>
+<p>그래서 다음과 같이 <code>List.map</code>의 타입을 Optics으로 표현할 수 있습니다!</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">type</span> Arrow<span class="op">[</span>A<span class="op">,</span> B<span class="op">]</span> <span class="op">=</span> A <span class="op">=&gt;</span> B <span class="co">// Function</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">// ListMap = Arrow[Car, Bus] =&gt; Arrow[List[Car], List[Bus]]</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">type</span> ListMap <span class="op">=</span> Optics<span class="op">[</span>Arrow<span class="op">,</span> <span class="ex">List</span><span class="op">[</span>Car<span class="op">],</span> <span class="ex">List</span><span class="op">[</span>Bus<span class="op">],</span> Car<span class="op">,</span> Bus<span class="op">]</span></span></code></pre></div>
+<p>실제로 <code>List.map</code>도 Optic이 됩니다.</p>
 <hr />
 <h1 id="분류">분류</h1>
-<p>이 원소가 하나의 자료구조 안에 몇 개가 있는지에 따라 분류해 볼 수 있겠죠.</p>
+<p>이제 본격적으로 살펴보기 위해 각각의 케이스를 고려해 보겠습니다.</p>
+<p>특히, 자료구조를 종류에 따라 분류하는 것이 중요합니다.</p>
+<p>작업하고자 하는 원소가 하나의 자료구조 안에 몇 개가 있는지에 따라 분류해 볼 수 있겠죠.</p>
 <table>
 <thead>
 <tr class="header">
@@ -102,28 +170,98 @@
 </table>
 <p>이렇게 내부 원소가 유일하냐, “있거나 없거나” 인가, 여럿이냐에 따라 나눌 수 있고,</p>
 <p>내부 원소가 전체인가 여부에 따라 나눌 수도 있습니다.</p>
-<p>그리고 자료구조의 입장으로서 이 접근자들은 다음과 같은 상속 관계를 가집니다:</p>
+<p>한편, 이 접근자들은 다음과 같은 상속 관계를 가집니다:</p>
 <p>(상속 관계 넣기)</p>
+<p>예를 들어, Lens 접근자는 Affine Traversal로 쓸 수 있고, Affine Traversal 접근자는 Traversal로써 쓸 수도 있습니다.</p>
 <hr />
 <p>그럼 이제 하나하나 알아보겠습니다.</p>
 <h1 id="lens">Lens</h1>
 <h2 id="표현-1">표현</h2>
-<p>Lens의 경우, Var Laarhoven 표현이 상당히 간단하게 나옵니다.</p>
+<p>위에서 언급했듯이, 다음과 같은 일반적 표현이 가능합니다.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> <span class="kw">class</span> LensS<span class="op">[</span>S<span class="op">,</span> A<span class="op">](</span>get <span class="op">:</span> S <span class="op">=&gt;</span> A<span class="op">,</span> set<span class="op">:</span> A <span class="op">=&gt;</span> S <span class="op">=&gt;</span> S<span class="op">)</span></span></code></pre></div>
+<p>다형성을 고려하면, 이렇게 나옵니다.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> <span class="kw">class</span> Lens<span class="op">[</span>S<span class="op">,</span> T<span class="op">,</span> A<span class="op">,</span> B<span class="op">](</span>get<span class="op">:</span> S <span class="op">=&gt;</span> A<span class="op">,</span> set<span class="op">:</span> B <span class="op">=&gt;</span> S <span class="op">=&gt;</span> T<span class="op">)</span></span></code></pre></div>
+<p>이 경우, 원소의 타입이 A에서 B로 바뀌면서, 구조체의 타입이 S에서 T로 바뀌게 됩니다.</p>
+<hr />
+<p>한편 Profunctor 표현법에서, <code>Lens</code>예제를 들며 <code>Strong</code>이 나왔었습니다.</p>
+<p><code>Strong</code>한 <code>Profunctor</code>는 다음 함수를 구현합니다.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">trait</span> Strong<span class="op">[</span>P<span class="op">[</span>_<span class="op">,</span> _<span class="op">]:</span> Profunctor<span class="op">]</span> <span class="op">{</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> seconds<span class="op">[</span>A<span class="op">,</span> B<span class="op">,</span> S<span class="op">]:</span> P<span class="op">[</span>A<span class="op">,</span> B<span class="op">]</span> <span class="op">=&gt;</span> P<span class="op">[(</span>S<span class="op">,</span> A<span class="op">),</span> <span class="op">(</span>S<span class="op">,</span> B<span class="op">)]</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span></code></pre></div>
+<p>A를 받고 B를 주는 연산이 있을 때, 추가로 S를 더 받고 더 주는 연산으로 승격시킬 수 있는 것입니다.</p>
+<p>필드 이름을 제외한다면 record를 tuple로서 볼 수 있는 만큼, Lens는 record와 관계가 깊습니다.</p>
+<p>위에서 보여드렸듯, Lens 자체의 타입은 이렇게 생겼습니다. (다형성을 고려하지 않은 경우)</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>  <span class="co">// OpticsS[P, Foo, Bar] = P[Bar, Bar] =&gt; P[Foo, Foo]</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> lensFooBar<span class="op">[</span>P<span class="op">[</span>_<span class="op">,</span> _<span class="op">]:</span> Strong<span class="op">]</span> <span class="op">:</span> OpticS<span class="op">[</span>P<span class="op">,</span> Foo<span class="op">,</span> Bar<span class="op">]</span></span></code></pre></div>
+<h3 id="표현의-변환">표현의 변환</h3>
+<p>Profunctor 형태로부터 일반적 형태는 쉽게 얻을 수 있습니다. 타입 치환을 하면 됩니다.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">type</span> ToBar<span class="op">[</span>M<span class="op">,</span> N<span class="op">]</span> <span class="op">=</span> M <span class="op">=&gt;</span> Bar <span class="co">// Summarize M to Bar</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">type</span> Arrow<span class="op">[</span>M<span class="op">,</span> N<span class="op">]</span> <span class="op">=</span> M <span class="op">=&gt;</span> N   <span class="co">// Simple modify</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> lensFBTyp<span class="op">:</span> LensS<span class="op">[</span>Foo<span class="op">,</span> Bar<span class="op">]</span> <span class="op">=</span> <span class="fu">LensS</span><span class="op">(</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// lensFooBar[ToBar] : (Bar =&gt; Bar) =&gt; (Foo =&gt; Bar)</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    lensFooBar<span class="op">[</span>ToBar<span class="op">]</span> <span class="op">(</span>identity<span class="op">),</span> <span class="co">// get</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">// lensFooBar[Arrow] : (Bar =&gt; Bar) =&gt; (Foo =&gt; Foo)</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">(</span>toSet<span class="op">:</span> A<span class="op">)</span> <span class="op">=&gt;</span> lensFooBar<span class="op">[</span>Arrow<span class="op">]</span> <span class="op">(</span>_ <span class="op">=&gt;</span> toSet<span class="op">)</span> <span class="co">// set</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  <span class="op">)</span></span></code></pre></div>
+<p>(ToBar와 Arrow에 대해 Strong trait의 인스턴스를 만드는 부분은 생략합니다. 한번 예제삼아 만들어 보세요)</p>
+<p>반대로 일반적 형태에서 Profunctor 형태를 얻기는 꽤 어렵습니다.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> lensFBTyp<span class="op">:</span> LensS<span class="op">[</span>Foo<span class="op">,</span> Bar<span class="op">]</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> lensFooBar<span class="op">[</span>P<span class="op">[</span>_<span class="op">,</span> _<span class="op">]:</span> Strong<span class="op">]:</span> OpticS<span class="op">[</span>P<span class="op">,</span> Foo<span class="op">,</span> Bar<span class="op">]</span> <span class="op">=</span> barTrans <span class="op">=&gt;</span> <span class="op">{</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> withOriginal<span class="op">:</span> P<span class="op">[(</span>Foo<span class="op">,</span> Bar<span class="op">),</span> <span class="op">(</span>Foo<span class="op">,</span> Bar<span class="op">)]</span> <span class="op">=</span> seconds<span class="op">[</span>Bar<span class="op">,</span> Bar<span class="op">,</span> Foo<span class="op">]</span> <span class="op">(</span>barTrans<span class="op">)</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Gets Bar from input Foo</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">getBarP</span> <span class="op">(</span>foo <span class="op">:</span> Foo<span class="op">):</span> <span class="op">(</span>Foo<span class="op">,</span> Bar<span class="op">)</span> <span class="op">=</span> <span class="op">(</span>foo<span class="op">,</span> lensFBTyp<span class="op">.</span><span class="fu">get</span> <span class="op">(</span>foo<span class="op">))</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Sets modified Bar into output Foo</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">setBarP</span> <span class="op">(</span>pair<span class="op">:</span> <span class="op">(</span>Foo<span class="op">,</span> Bar<span class="op">)):</span> Foo <span class="op">=</span> lensFBTyp<span class="op">.</span><span class="fu">set</span> <span class="op">(</span>pair<span class="op">.</span>_2<span class="op">)</span> <span class="op">(</span>pair<span class="op">.</span>_1<span class="op">)</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">// of type P[Foo, Foo]</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">dimap</span> <span class="op">(</span>getBarP<span class="op">)</span> <span class="op">(</span>setBarP<span class="op">)</span> <span class="op">(</span>withOriginal<span class="op">)</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span></code></pre></div>
 <h2 id="용법">용법</h2>
-<p>First-class property처럼 사용할 수 있습니다.</p>
-<p>한편, (Affine) Traversal로 간주하여 사용하기에도 유용합니다. 이 부분은 Traversal 단락에서 자세히 설명하겠습니다.</p>
+<p>Lens는 first-class property처럼 사용할 수 있습니다. 특히, 쉬운 합성이 이점입니다.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> busWheel<span class="op">:</span> OpticS<span class="op">[</span>P<span class="op">,</span> Bus<span class="op">,</span> Wheel<span class="op">]</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> wheelRubber<span class="op">:</span> OpticS<span class="op">[</span>P<span class="op">,</span> Wheel<span class="op">,</span> Rubber<span class="op">]</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> busRubber<span class="op">:</span> OpticS<span class="op">[</span>P<span class="op">,</span> Bus<span class="op">,</span> Rubber<span class="op">]</span> <span class="op">=</span> busWheel compose wheelRubber</span></code></pre></div>
+<p>Lens에 <code>P</code>를 연산 타입으로 정해주면, <code>OpticS[P, A, B]</code>의 꼴로 나오게 되어 위와 같은 합성이 가능해집니다. Strong trait을 가지고 있는 어떤 <code>P</code>에든지 적용이 가능합니다.</p>
+<p>한편, Lens는 (Affine) Traversal로 간주하여 사용하기에도 유용합니다. 이 부분은 Traversal 단락에서 자세히 설명하겠습니다.</p>
 <h1 id="iso">Iso</h1>
 <p>Iso는 ’같다’는 뜻의 Isomorphism에서 유래했습니다.</p>
 <p>이름에 걸맞게, Iso는 타입 A와 타입 B가 같다는 것을 표현하기 위해 쓰입니다.</p>
 <h2 id="표현-2">표현</h2>
-<p>Van Laarhoven 표현은 생각보다 복잡한데, 그리 쓸모는 없습니다.</p>
+<p>기본적인 표현법은 다음과 같습니다.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> <span class="kw">class</span> IsoS<span class="op">[</span>S<span class="op">,</span> A<span class="op">](</span>get <span class="op">:</span> S <span class="op">=&gt;</span> A<span class="op">,</span> review<span class="op">:</span> A <span class="op">=&gt;</span> S<span class="op">)</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Polymorphic case</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> <span class="kw">class</span> Iso<span class="op">[</span>S<span class="op">,</span> T<span class="op">,</span> A<span class="op">,</span> B<span class="op">](</span>get<span class="op">:</span> S <span class="op">=&gt;</span> A<span class="op">,</span> review<span class="op">:</span> B <span class="op">=&gt;</span> T<span class="op">)</span></span></code></pre></div>
+<p>Profunctor 표현법으로는, 다음과 같이 제약조건이 Profunctor밖에 없을 때 Iso가 됩니다.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>  <span class="co">// OpticsS[P, Hell, Monday] = P[Monday, Monday] =&gt; P[Hell, Hell]</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> isoHellMon<span class="op">[</span>P<span class="op">[</span>_<span class="op">,</span> _<span class="op">]:</span> Profunctor<span class="op">]</span> <span class="op">:</span> OpticS<span class="op">[</span>P<span class="op">,</span> Hell<span class="op">,</span> Monday<span class="op">]</span></span></code></pre></div>
+<h3 id="표현의-변환-1">표현의 변환</h3>
+<p>Lens에 비해선 쉽습니다.</p>
+<p>Profunctor 형태에서 일반 형태로:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">type</span> ToMonday<span class="op">[</span>M<span class="op">,</span> N<span class="op">]</span> <span class="op">=</span> M <span class="op">=&gt;</span> Monday <span class="co">// Summarize M to Monday</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">type</span> FromMonday<span class="op">[</span>M<span class="op">,</span> N<span class="op">]</span> <span class="op">=</span> Monday <span class="op">=&gt;</span> N   <span class="co">// Generate N from Moday</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> isoHMTyp<span class="op">:</span> IsoS<span class="op">[</span>Hell<span class="op">,</span> Monday<span class="op">]</span> <span class="op">=</span> <span class="fu">IsoS</span><span class="op">(</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// isoHellMon[ToMonday] : (Monday =&gt; Monday) =&gt; (Hell =&gt; Monday)</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    isoHellMon<span class="op">[</span>ToMonday<span class="op">]</span> <span class="op">(</span>identity<span class="op">),</span> <span class="co">// get</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">// isoBarBaz[FromMonday] : (Monday =&gt; Monday) =&gt; (Monday =&gt; Hell)</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>    isoHellMon<span class="op">[</span>FromMonday<span class="op">]</span> <span class="op">(</span>identity<span class="op">)</span> <span class="co">// review</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>  <span class="op">)</span></span></code></pre></div>
+<p>일반 형태에서 Profunctor 형태로:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> isoHMTyp<span class="op">:</span> IsoS<span class="op">[</span>Hell<span class="op">,</span> Monday<span class="op">]</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> isoHellMon<span class="op">[</span>P<span class="op">[</span>_<span class="op">,</span> _<span class="op">]:</span> Profunctor<span class="op">]:</span> OpticS<span class="op">[</span>P<span class="op">,</span> Hell<span class="op">,</span> Monday<span class="op">]</span> <span class="op">=</span> monTrans <span class="op">=&gt;</span> <span class="op">{</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Gets Bar from input Foo</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">getBarP</span> <span class="op">(</span>foo <span class="op">:</span> Foo<span class="op">):</span> <span class="op">(</span>Foo<span class="op">,</span> Bar<span class="op">)</span> <span class="op">=</span> <span class="op">(</span>foo<span class="op">,</span> lensFBTyp<span class="op">.</span><span class="fu">get</span> <span class="op">(</span>foo<span class="op">))</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Sets modified Bar into output Foo</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">setBarP</span> <span class="op">(</span>pair<span class="op">:</span> <span class="op">(</span>Foo<span class="op">,</span> Bar<span class="op">)):</span> Foo <span class="op">=</span> lensFBTyp<span class="op">.</span><span class="fu">set</span> <span class="op">(</span>pair<span class="op">.</span>_2<span class="op">)</span> <span class="op">(</span>pair<span class="op">.</span>_1<span class="op">)</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">// monTrans : P[Monday, Monday]</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">// isoHMTyp.get : Hell =&gt; Monday  /  isoHMTyp.review : Monday =&gt; Hell</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">dimap</span> <span class="op">(</span>isoHMTyp<span class="op">.</span>get<span class="op">)</span> <span class="op">(</span>isoHMTyp<span class="op">.</span>review<span class="op">)</span> <span class="op">(</span>monTrans<span class="op">)</span></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span></code></pre></div>
 <h2 id="용법-1">용법</h2>
-<p>단순히 함수 두개를 합친 것이기 때문에 사실 동등성을 명시하는 것 이외에 별로 쓸모가 없습니다.</p>
-<p>따라서, Iso를 Lens나 Prism 등과 합성해서 쓰는 경우가 많습니다. Iso는 Lens와 Prism 둘 다 되거든요.</p>
-<h1 id="affine-traversal">Affine Traversal</h1>
+<p>단순히 함수 두개를 합친 것이기 때문에, 사실 동등성을 명시하는 것 이외에 별로 쓸모가 없습니다.</p>
+<p>따라서, Iso를 Lens나 Prism 등과 합성해서 쓰는 경우가 많습니다.</p>
+<h1 id="prism">Prism</h1>
 <h2 id="표현-3">표현</h2>
 <h2 id="용법-2">용법</h2>
-<h1 id="prism">Prism</h1>
+<h1 id="affine-traversal">Affine Traversal</h1>
 <h2 id="표현-4">표현</h2>
 <h2 id="용법-3">용법</h2>
 <h1 id="traversal">Traversal</h1>
