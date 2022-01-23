@@ -33,7 +33,7 @@
 <p><em>함수형에 별로 관심이 없으신 줄 알았는데, 의외로 관심있으신 분들이 꽤 계셨습니다. 그분들을 위해 Optics가 무엇인지 설명을 해 보고자 합니다.</em></p>
 </blockquote>
 <blockquote>
-<p><em>이 글은 함수형, 특히 Typeclass에 익숙한 분들을 위해 작성되었습니다.</em></p>
+<p><em>이 글은 함수형에 익숙한 분들을 위해 작성되었습니다.</em></p>
 </blockquote>
 <blockquote>
 <p><em>설명을 위해 Scala를 사용하지만, 컴파일이 안 된 코드입니다. 직접 구현해 보시려면, Typeclass를 작성하는 방향으로 작업하시면 됩니다.</em></p>
@@ -101,7 +101,7 @@
 <div class="sourceCode" id="cb11"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> inputFn <span class="op">:</span> Dog <span class="op">=&gt;</span> Bus    <span class="co">// Function</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> busToCar <span class="op">:</span> P<span class="op">[</span>Bus<span class="op">,</span> Car<span class="op">]</span>  <span class="co">// P</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> outputFn <span class="op">:</span> Car <span class="op">=&gt;</span> Cat   <span class="co">// Function</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> dogToCat <span class="op">:</span> P<span class="op">[</span>Dog<span class="op">,</span> Cat<span class="op">]</span> <span class="op">=</span> <span class="fu">dimap</span> <span class="op">(</span>inputFn<span class="op">)</span> <span class="op">(</span>outputFn<span class="op">)</span> <span class="op">(</span>busToCar<span class="op">)</span></span></code></pre></div>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> dogToCat <span class="op">:</span> P<span class="op">[</span>Dog<span class="op">,</span> Cat<span class="op">]</span> <span class="op">=</span> Profunctor<span class="op">[</span>P<span class="op">].</span><span class="fu">dimap</span> <span class="op">(</span>inputFn<span class="op">)</span> <span class="op">(</span>outputFn<span class="op">)</span> <span class="op">(</span>busToCar<span class="op">)</span></span></code></pre></div>
 <p>함수 합성과 비슷하네요. 다만 P끼리는 잇지 못합니다.</p>
 <p>다음과 같이 trait을 통해 P에 대한 제약조건으로 만들어 줄 수 있습니다.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">trait</span> Profunctor<span class="op">[</span>P<span class="op">[</span>_<span class="op">,</span> _<span class="op">]]</span> <span class="op">{</span></span>
@@ -188,7 +188,7 @@
 <p>한편 Profunctor 표현법에서, <code>Lens</code>예제를 들며 <code>Strong</code>이 나왔었습니다.</p>
 <p><code>Strong</code>한 <code>Profunctor</code>는 다음 함수를 구현합니다.</p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">trait</span> Strong<span class="op">[</span>P<span class="op">[</span>_<span class="op">,</span> _<span class="op">]:</span> Profunctor<span class="op">]</span> <span class="op">{</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> seconds<span class="op">[</span>A<span class="op">,</span> B<span class="op">,</span> S<span class="op">]:</span> P<span class="op">[</span>A<span class="op">,</span> B<span class="op">]</span> <span class="op">=&gt;</span> P<span class="op">[(</span>S<span class="op">,</span> A<span class="op">),</span> <span class="op">(</span>S<span class="op">,</span> B<span class="op">)]</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> seconds<span class="op">[</span>A<span class="op">,</span> B<span class="op">,</span> S<span class="op">]:</span> P<span class="op">[</span>A<span class="op">,</span> B<span class="op">]</span> <span class="op">=&gt;</span> P<span class="op">[(</span>S<span class="op">,</span> A<span class="op">),</span> <span class="op">(</span>S<span class="op">,</span> B<span class="op">)]</span></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span></code></pre></div>
 <p>A를 받고 B를 주는 연산이 있을 때, 추가로 S를 더 받고 더 주는 연산으로 승격시킬 수 있는 것입니다.</p>
 <p>필드 이름을 제외한다면 record를 tuple로서 볼 수 있는 만큼, Lens는 record와 관계가 깊습니다.</p>
@@ -210,13 +210,13 @@
 <div class="sourceCode" id="cb25"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> lensFBTyp<span class="op">:</span> LensS<span class="op">[</span>Foo<span class="op">,</span> Bar<span class="op">]</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> lensFooBar<span class="op">[</span>P<span class="op">[</span>_<span class="op">,</span> _<span class="op">]:</span> Strong<span class="op">]:</span> OpticS<span class="op">[</span>P<span class="op">,</span> Foo<span class="op">,</span> Bar<span class="op">]</span> <span class="op">=</span> barTrans <span class="op">=&gt;</span> <span class="op">{</span></span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// barTrans : P[Bar, Bar]</span></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> withOriginal<span class="op">:</span> P<span class="op">[(</span>Foo<span class="op">,</span> Bar<span class="op">),</span> <span class="op">(</span>Foo<span class="op">,</span> Bar<span class="op">)]</span> <span class="op">=</span> seconds<span class="op">[</span>Bar<span class="op">,</span> Bar<span class="op">,</span> Foo<span class="op">]</span> <span class="op">(</span>barTrans<span class="op">)</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> withOriginal<span class="op">:</span> P<span class="op">[(</span>Foo<span class="op">,</span> Bar<span class="op">),</span> <span class="op">(</span>Foo<span class="op">,</span> Bar<span class="op">)]</span> <span class="op">=</span> Strong<span class="op">[</span>P<span class="op">].</span>seconds<span class="op">[</span>Bar<span class="op">,</span> Bar<span class="op">,</span> Foo<span class="op">]</span> <span class="op">(</span>barTrans<span class="op">)</span></span>
 <span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Gets Bar from input Foo</span></span>
 <span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">getBarP</span> <span class="op">(</span>foo <span class="op">:</span> Foo<span class="op">):</span> <span class="op">(</span>Foo<span class="op">,</span> Bar<span class="op">)</span> <span class="op">=</span> <span class="op">(</span>foo<span class="op">,</span> lensFBTyp<span class="op">.</span><span class="fu">get</span> <span class="op">(</span>foo<span class="op">))</span></span>
 <span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Sets modified Bar into output Foo</span></span>
 <span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">setBarP</span> <span class="op">(</span>pair<span class="op">:</span> <span class="op">(</span>Foo<span class="op">,</span> Bar<span class="op">)):</span> Foo <span class="op">=</span> lensFBTyp<span class="op">.</span><span class="fu">set</span> <span class="op">(</span>pair<span class="op">.</span>_2<span class="op">)</span> <span class="op">(</span>pair<span class="op">.</span>_1<span class="op">)</span></span>
 <span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">// of type P[Foo, Foo]</span></span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">dimap</span> <span class="op">(</span>getBarP<span class="op">)</span> <span class="op">(</span>setBarP<span class="op">)</span> <span class="op">(</span>withOriginal<span class="op">)</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>    Profunctor<span class="op">[</span>P<span class="op">].</span><span class="fu">dimap</span> <span class="op">(</span>getBarP<span class="op">)</span> <span class="op">(</span>setBarP<span class="op">)</span> <span class="op">(</span>withOriginal<span class="op">)</span></span>
 <span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span></code></pre></div>
 <h2 id="용법">용법</h2>
 <p>Lens는 first-class property처럼 사용할 수 있습니다. 특히, 쉬운 합성이 이점입니다.</p>
@@ -253,7 +253,7 @@
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> isoHellMon<span class="op">[</span>P<span class="op">[</span>_<span class="op">,</span> _<span class="op">]:</span> Profunctor<span class="op">]:</span> OpticS<span class="op">[</span>P<span class="op">,</span> Hell<span class="op">,</span> Monday<span class="op">]</span> <span class="op">=</span> monTrans <span class="op">=&gt;</span> <span class="op">{</span></span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// monTrans : P[Monday, Monday]</span></span>
 <span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// isoHMTyp.get : Hell =&gt; Monday  /  isoHMTyp.review : Monday =&gt; Hell</span></span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">dimap</span> <span class="op">(</span>isoHMTyp<span class="op">.</span>get<span class="op">)</span> <span class="op">(</span>isoHMTyp<span class="op">.</span>review<span class="op">)</span> <span class="op">(</span>monTrans<span class="op">)</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    Profunctor<span class="op">[</span>P<span class="op">].</span><span class="fu">dimap</span> <span class="op">(</span>isoHMTyp<span class="op">.</span>get<span class="op">)</span> <span class="op">(</span>isoHMTyp<span class="op">.</span>review<span class="op">)</span> <span class="op">(</span>monTrans<span class="op">)</span></span>
 <span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span></code></pre></div>
 <h2 id="용법-1">용법</h2>
 <p>단순히 함수 두개를 합친 것이기 때문에, 사실 동등성을 명시하는 것 이외에는 쓸모가 없습니다.</p>
@@ -275,7 +275,7 @@
 <p>Lens에는 <code>Strong</code> 제약조건이 있듯, Prism에는 <code>Choice</code> 제약조건이 있습니다.</p>
 <p><code>Choice</code>는 다음 함수를 구현합니다.</p>
 <div class="sourceCode" id="cb32"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">trait</span> <span class="ex">Choice</span><span class="op">[</span>P<span class="op">[</span>_<span class="op">,</span> _<span class="op">]:</span> Profunctor<span class="op">]</span> <span class="op">{</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> rights<span class="op">[</span>A<span class="op">,</span> B<span class="op">,</span> S<span class="op">]:</span> P<span class="op">[</span>A<span class="op">,</span> B<span class="op">]</span> <span class="op">=&gt;</span> P<span class="op">[</span>Either<span class="op">[</span>S<span class="op">,</span> A<span class="op">],</span> Either<span class="op">[</span>S<span class="op">,</span> B<span class="op">]]</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> rights<span class="op">[</span>A<span class="op">,</span> B<span class="op">,</span> S<span class="op">]:</span> P<span class="op">[</span>A<span class="op">,</span> B<span class="op">]</span> <span class="op">=&gt;</span> P<span class="op">[</span>Either<span class="op">[</span>S<span class="op">,</span> A<span class="op">],</span> Either<span class="op">[</span>S<span class="op">,</span> B<span class="op">]]</span></span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span></code></pre></div>
 <p>즉, A를 받고 B를 주는 연산이 있을 때, S나 A를 주고 S나 B를 받는 연산으로 승격시킬 수 있습니다. S를 받게 된다면 특별한 작업 없이 그대로 통과시키게 되겠지요.</p>
 <p>이를 이용하여 특정 케이스에 대해서만 작업을 진행할 수 있습니다. 마치 <code>Option</code>의 <code>map</code>/<code>flatMap</code>처럼요.</p>
@@ -301,7 +301,7 @@
 <div class="sourceCode" id="cb35"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> prismPMTyp<span class="op">:</span> PrismS<span class="op">[</span>Pet<span class="op">,</span> Meow<span class="op">]</span></span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> prismPetMeow<span class="op">[</span>P<span class="op">[</span>_<span class="op">,</span> _<span class="op">]:</span> <span class="ex">Choice</span><span class="op">]:</span> OpticS<span class="op">[</span>P<span class="op">,</span> Pet<span class="op">,</span> Meow<span class="op">]</span> <span class="op">=</span> meowTrans <span class="op">=&gt;</span> <span class="op">{</span></span>
 <span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// meowTrans : P[Meow, Meow]</span></span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> caseByCase<span class="op">:</span> P<span class="op">[</span>Either<span class="op">[</span>Pet<span class="op">,</span> Meow<span class="op">],</span> Either<span class="op">[</span>Pet<span class="op">,</span> Meow<span class="op">]]</span> <span class="op">=</span> rights<span class="op">[</span>Meow<span class="op">,</span> Meow<span class="op">,</span> Pet<span class="op">]</span> <span class="op">(</span>meowTrans<span class="op">)</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> caseByCase<span class="op">:</span> P<span class="op">[</span>Either<span class="op">[</span>Pet<span class="op">,</span> Meow<span class="op">],</span> Either<span class="op">[</span>Pet<span class="op">,</span> Meow<span class="op">]]</span> <span class="op">=</span> <span class="ex">Choice</span><span class="op">[</span>P<span class="op">].</span>rights<span class="op">[</span>Meow<span class="op">,</span> Meow<span class="op">,</span> Pet<span class="op">]</span> <span class="op">(</span>meowTrans<span class="op">)</span></span>
 <span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Finds Meow out of Pet</span></span>
 <span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">findMeowE</span> <span class="op">(</span>pet<span class="op">:</span> Pet<span class="op">):</span> Either<span class="op">[</span>Pet<span class="op">,</span> Meow<span class="op">]</span> <span class="op">=</span> prismPMTyp<span class="op">.</span><span class="fu">matching</span> <span class="op">(</span>pet<span class="op">)</span></span>
 <span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Get back Pet from Meow (or from other kinds of Pet)</span></span>
@@ -310,7 +310,7 @@
 <span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> <span class="fu">Right</span><span class="op">(</span>meow<span class="op">)</span> <span class="op">=&gt;</span> prismPMTyp<span class="op">.</span><span class="fu">review</span> <span class="op">(</span>meow<span class="op">)</span></span>
 <span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
 <span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">// of type P[Pet, Pet]</span></span>
-<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">dimap</span> <span class="op">(</span>findMeowE<span class="op">)</span> <span class="op">(</span>reMeowE<span class="op">)</span> <span class="op">(</span>caseByCase<span class="op">)</span></span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>    Profunctor<span class="op">[</span>P<span class="op">].</span><span class="fu">dimap</span> <span class="op">(</span>findMeowE<span class="op">)</span> <span class="op">(</span>reMeowE<span class="op">)</span> <span class="op">(</span>caseByCase<span class="op">)</span></span>
 <span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">// pet -[findMeowE]-&gt; mayMeow -[caseByCase]-&gt; mayMeow' -[reMeowE]-&gt; pet'</span></span></code></pre></div>
 <h2 id="용법-2">용법</h2>
 <p>다음과 같은 경우를 생각해 봅시다.</p>
@@ -320,24 +320,119 @@
 <p><code>Cat</code>의 경우에만 <code>meow</code>할 수 있을 겁니다. <code>Meow</code>에 대해서만 작업하고 싶을 때 어떻게 해야 할까요?</p>
 <p>바로 이 작업을 처리하기 위해 Prism을 사용합니다.</p>
 <p>특히, 내부를 드러낼 필요 없이 Prism만 구현해 주면 구조체에 대해 Pattern Matching 비슷하게 다룰 수 있는 것이죠.</p>
+<blockquote>
+<p>TODO 패턴매칭 식의 표현</p>
+</blockquote>
 <p>허나, 이보다는 앞으로 설명할 (Affine) Traversal로써 더 많이 쓰이는듯 합니다.</p>
+<hr />
 <h1 id="affine-traversal">Affine Traversal</h1>
 <p>Affine Traversal은 구조체에 있을 수도 있고 없을 수도 있는 필드를 표현하는데 씁니다.</p>
 <p>위의 <code>Pet</code> 예제를 살짝 변경하면,</p>
 <div class="sourceCode" id="cb37"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">sealed</span> <span class="kw">trait</span> Pet</span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> <span class="kw">class</span> <span class="fu">Dog</span><span class="op">(</span>bark<span class="op">:</span> Bark<span class="op">,</span> small<span class="op">:</span> Bool<span class="op">)</span> <span class="kw">extends</span> Pet</span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> <span class="kw">class</span> <span class="fu">Cat</span><span class="op">(</span>meow<span class="op">:</span> Meow<span class="op">,</span> isStray<span class="op">:</span> Bool<span class="op">)</span> <span class="kw">extends</span> Pet</span></code></pre></div>
-<p>이렇게 되면, <code>Cat</code> 구조체의 일부가 되어 <code>Pet</code>과 <code>Meow</code>에 대해 <code>review</code>를 사용할 수 없게 됩니다.</p>
+<p>이렇게 되면, <code>Meow</code>만으로 <code>Pet</code>을 만들어 줄 수 없게 됩니다. 즉, <code>review</code>를 사용할 수 없습니다.</p>
+<p>이러한 경우에 적용되는 것이 Affine Traversal입니다.</p>
 <h2 id="표현-4">표현</h2>
+<p>기본적인 표현법은 역시 위 접근자들과 유사합니다.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> <span class="kw">class</span> AffTraversalS<span class="op">[</span>S<span class="op">,</span> A<span class="op">](</span>matching <span class="op">:</span> S <span class="op">=&gt;</span> Either<span class="op">[</span>S<span class="op">,</span> A<span class="op">],</span> set<span class="op">:</span> A <span class="op">=&gt;</span> S <span class="op">=&gt;</span> S<span class="op">)</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Polymorphic case</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> <span class="kw">class</span> AffTraversal<span class="op">[</span>S<span class="op">,</span> T<span class="op">,</span> A<span class="op">,</span> B<span class="op">](</span>matching<span class="op">:</span> S <span class="op">=&gt;</span> Either<span class="op">[</span>T<span class="op">,</span> A<span class="op">],</span> set<span class="op">:</span> B <span class="op">=&gt;</span> S <span class="op">=&gt;</span> T<span class="op">)</span></span></code></pre></div>
+<p>각각 Prism과 Lens에서 이미 보았던 <code>matching</code>과 <code>set</code>을 사용함을 알 수 있습니다.</p>
+<hr />
+<p>Profunctor 표현법</p>
+<p>Lens에는 <code>Strong</code>, Prism에는 <code>Choice</code> 제약조건이 있다면, AffineTraversal에는 둘 다 있습니다.</p>
+<p>그래서 해당 작업 <code>P</code>는 record와 case-by-case 둘 다 가능한 profunctor가 됩니다. (정확히는, 제약조건에 의해 둘 다 가능해야 합니다)</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Some pet can meow - not polymorphic</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">// OpticS[P, Pet, Meow] = P[Meow, Meow] =&gt; P[Pet, Pet]</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> affTPetMeow<span class="op">[</span>P<span class="op">[</span>_<span class="op">,</span> _<span class="op">]:</span> Strong<span class="op">,</span> <span class="ex">Choice</span><span class="op">]</span> <span class="op">:</span> OpticS<span class="op">[</span>P<span class="op">,</span> Pet<span class="op">,</span> Meow<span class="op">]</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Option content - polymorphic</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Optic[P, Option[A], Option[B], A, B] = P[A, B] =&gt; P[Option[A], Option[B]]</span></span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> affTOption<span class="op">[</span>P<span class="op">[</span>_<span class="op">,</span> _<span class="op">]:</span> Strong<span class="op">,</span> <span class="ex">Choice</span><span class="op">,</span> A<span class="op">,</span> B<span class="op">]</span> <span class="op">:</span> Optic<span class="op">[</span>P<span class="op">,</span> <span class="ex">Option</span><span class="op">[</span>A<span class="op">],</span> <span class="ex">Option</span><span class="op">[</span>B<span class="op">],</span> A<span class="op">,</span> B<span class="op">]</span></span></code></pre></div>
+<h3 id="표현의-변환-3">표현의 변환</h3>
+<p>Lens와 Prism을 섞어놓은듯 구현이 됩니다.</p>
+<p>Profunctor 형태에서 일반 형태로:</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">type</span> MayMeow<span class="op">[</span>M<span class="op">,</span> N<span class="op">]</span> <span class="op">=</span> M <span class="op">=&gt;</span> Either<span class="op">[</span>N<span class="op">,</span> Meow<span class="op">]</span> <span class="co">// Find Meow from M</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">type</span> Arrow<span class="op">[</span>M<span class="op">,</span> N<span class="op">]</span> <span class="op">=</span> M <span class="op">=&gt;</span> N                 <span class="co">// Function</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> affTPMTyp<span class="op">:</span> AffTraversalS<span class="op">[</span>Pet<span class="op">,</span> Meow<span class="op">]</span> <span class="op">=</span> <span class="fu">AffTraversalS</span><span class="op">(</span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// affTPetMeow[MayMeow] : (Meow =&gt; Either[Meow, Meow]) =&gt; (Pet =&gt; Either[Pet, Meow])</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>    affTPetMeow<span class="op">[</span>MayMeow<span class="op">]</span> <span class="op">((</span>meow<span class="op">)</span> <span class="op">=&gt;</span> <span class="fu">Right</span><span class="op">(</span>meow<span class="op">)),</span> <span class="co">// matching</span></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">// affTPetMeow[Arrow] : (Meow =&gt; Meow) =&gt; (Pet =&gt; Pet)</span></span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">(</span>meow<span class="op">:</span> Meow<span class="op">)</span> <span class="op">=&gt;</span> affTPetMeow<span class="op">[</span>FromMeow<span class="op">]</span> <span class="op">(</span>_ <span class="op">=&gt;</span> meow<span class="op">)</span> <span class="co">// set</span></span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>  <span class="op">)</span></span></code></pre></div>
+<p>일반 형태에서 Profunctor 형태로:</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> affTPMTyp<span class="op">:</span> AffTraversalS<span class="op">[</span>Pet<span class="op">,</span> Meow<span class="op">]</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> affTPetMeow<span class="op">[</span>P<span class="op">[</span>_<span class="op">,</span> _<span class="op">]:</span> Strong<span class="op">,</span> <span class="ex">Choice</span><span class="op">]:</span> OpticS<span class="op">[</span>P<span class="op">,</span> Pet<span class="op">,</span> Meow<span class="op">]</span> <span class="op">=</span> meowTrans <span class="op">=&gt;</span> <span class="op">{</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// meowTrans : P[Meow, Meow]</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> withOriginal<span class="op">:</span> P<span class="op">[(</span>Pet<span class="op">,</span> Meow<span class="op">),</span> <span class="op">(</span>Pet<span class="op">,</span> Meow<span class="op">)]</span> <span class="op">=</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>      Strong<span class="op">[</span>P<span class="op">].</span>seconds<span class="op">[</span>Meow<span class="op">,</span> Meow<span class="op">,</span> Pet<span class="op">]</span></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> caseByCase<span class="op">:</span> P<span class="op">[</span>Either<span class="op">[</span>Pet<span class="op">,</span> <span class="op">(</span>Pet<span class="op">,</span> Meow<span class="op">)],</span> Either<span class="op">[</span>Pet<span class="op">,</span> <span class="op">(</span>Pet<span class="op">,</span> Meow<span class="op">)]]</span> <span class="op">=</span></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>      <span class="ex">Choice</span><span class="op">[</span>P<span class="op">].</span>rights<span class="op">[</span>Meow<span class="op">,</span> Meow<span class="op">,</span> Pet<span class="op">]</span> <span class="op">(</span>withOriginal<span class="op">)</span></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">pullMeow</span> <span class="op">(</span>pet<span class="op">:</span> Pet<span class="op">):</span> Either<span class="op">[</span>Pet<span class="op">,</span> <span class="op">(</span>Pet<span class="op">,</span> Meow<span class="op">)]</span> <span class="op">=</span></span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>      affTPMTyp<span class="op">.</span><span class="fu">matching</span> <span class="op">(</span>pet<span class="op">).</span><span class="fu">map</span> <span class="op">((</span>pet<span class="op">,</span> _<span class="op">))</span></span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">putMeow</span> <span class="op">(</span>beep<span class="op">:</span> Either<span class="op">[</span>Pet<span class="op">,</span> <span class="op">(</span>Pet<span class="op">,</span> Meow<span class="op">)]):</span> Pet <span class="op">=</span> beep <span class="cf">match</span> <span class="op">{</span></span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> <span class="fu">Left</span><span class="op">(</span>pet<span class="op">)</span> <span class="op">=&gt;</span> pet</span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> <span class="fu">Right</span><span class="op">((</span>old<span class="op">,</span> meow<span class="op">))</span> <span class="op">=&gt;</span> affTPMTyp<span class="op">.</span><span class="fu">set</span> <span class="op">(</span>meow<span class="op">)</span> <span class="op">(</span>old<span class="op">)</span></span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a>    Profunctor<span class="op">[</span>P<span class="op">].</span><span class="fu">dimap</span> <span class="op">(</span>pullMeowE<span class="op">)</span> <span class="op">(</span>putMeowE<span class="op">)</span> <span class="op">(</span>caseByCase<span class="op">)</span></span></code></pre></div>
+<blockquote>
+<p>어쩌면 Prism과 Lens를 합성해서 얻는 것이 더 쉽지 않을까 합니다. Pet -&gt; Cat으로 가는 Prism을 만들고, Cat -&gt; Meow 로 가는 Lens를 만든 후 합성하면 Affine Traversal이 되니까요.</p>
+</blockquote>
 <h2 id="용법-3">용법</h2>
+<p>이렇게 있을 수도 있고, 없을 수도 있는 필드들은 Algebraic data type에서 자주 보입니다.</p>
+<p>특히 ADT를 nesting할 경우, 접근, 특히 수정을 보다 간편히 하기 위해 쓸 수 있습니다.</p>
+<p>합성을 한 후 다시 일반적인 형태(여기선 <code>AffTraversal</code>)로 변형하여 <code>matching</code>, <code>set</code> 등을 쓰면 됩니다.</p>
+<p>하지만 달리 많이 쓰이는 방식이 있는데, 이것이 바로 <code>Traversal</code>로써의 쓰임새입니다.</p>
+<hr />
 <h1 id="traversal">Traversal</h1>
 <p>Traversal은 구조체에 대상이 여럿 있는 경우에 사용하는 접근자입니다.</p>
 <p>예를 들어, <code>List[Foo]</code>, <code>Array[Foo]</code>, <code>Map[K, Foo]</code>, <code>BinaryTree[Foo]</code> 등에는 <code>Foo</code>라는 대상이 여럿 있죠.</p>
 <p>Traversal은 이러한 데이터구조를 순회하면서 작업한다고 보시면 됩니다.</p>
+<p>일단 다음과 같은 <code>BinTree</code>를 생각해 봅시다.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">type</span> <span class="ex">Label</span> <span class="op">=</span> <span class="ex">String</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">sealed</span> <span class="kw">trait</span> BinTree</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> <span class="kw">class</span> <span class="fu">BinLeaf</span><span class="op">(</span>label<span class="op">:</span> <span class="ex">Label</span><span class="op">)</span> <span class="kw">extends</span> BinTree</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> <span class="kw">class</span> <span class="fu">BinBranch</span><span class="op">(</span>brl<span class="op">:</span> BinTree<span class="op">,</span> brr<span class="op">:</span> BinTree<span class="op">)</span> <span class="kw">extends</span> BinTree</span></code></pre></div>
 <h2 id="표현-5">표현</h2>
-<p>위에서 설명한 접근자들과는 다르게, Traversal를 쉽게 표현할 수 있는 방법은 없습니다.</p>
-<p>대신, 다음과 같이 2가지로 많이 쓰게 됩니다.</p>
+<p>위에서 설명한 접근자들과는 다르게, 안타깝게도 Traversal를 쉽게 표현할 수 있는 방법은 없습니다.</p>
+<p>대신 그보다 살짝 복잡하지만 Profunctor 방식보단 간단한 방식이 있습니다.</p>
+<p>Traversal의 경우, 결과를 모으는 구도가 되므로 Monoid와 관계가 깊습니다. 그래서 다음과 같이 <code>Monoidal</code> 제약조건이 등장합니다.</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">trait</span> Monoidal<span class="op">[</span>P<span class="op">[</span>_<span class="op">,</span> _<span class="op">]:</span> Profunctor<span class="op">]</span> <span class="op">{</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> alongside<span class="op">[</span>A<span class="op">,</span> B<span class="op">,</span> S<span class="op">,</span> T<span class="op">]:</span> P<span class="op">[</span>A<span class="op">,</span> B<span class="op">]</span> <span class="op">=&gt;</span> P<span class="op">[</span>S<span class="op">,</span> T<span class="op">]</span> <span class="op">=&gt;</span> P<span class="op">[(</span>A<span class="op">,</span> S<span class="op">),</span> <span class="op">(</span>B<span class="op">,</span> T<span class="op">)]</span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span></code></pre></div>
+<p>두 변환을 양 옆으로 합치는군요.</p>
+<p>Profunctor 표현법은 다음과 같이 나옵니다. 지금까지 중에서 제약조건이 가장 강합니다.</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>  <span class="co">// OpticS[P, BinTree, Label] = P[String, Label] =&gt; P[BinTree, BinTree]</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> travTreeLabel<span class="op">[</span>P<span class="op">[</span>_<span class="op">,</span> _<span class="op">]:</span> Strong<span class="op">,</span> <span class="ex">Choice</span><span class="op">,</span> Monoidal<span class="op">]</span> <span class="op">:</span> OpticS<span class="op">[</span>P<span class="op">,</span> BinTree<span class="op">,</span> <span class="ex">String</span><span class="op">]</span></span></code></pre></div>
+<p>이보다 다루기 편한 방법으로, <code>Applicative</code>를 사용해서 표현할 수도 있습니다.</p>
+<p>합성은 똑같이 쉽습니다만, 다른 접근자들이 Profunctor를 쓰기에 호환성이 떨어지게 됩니다.</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">type</span> TraversalS<span class="op">[</span>F<span class="op">[</span>_<span class="op">]:</span> Applicative<span class="op">,</span> S<span class="op">,</span> A<span class="op">]</span> <span class="op">=</span> <span class="op">(</span>A <span class="op">=&gt;</span> F<span class="op">[</span>A<span class="op">])</span> <span class="op">=&gt;</span> <span class="op">(</span>S <span class="op">=&gt;</span> F<span class="op">[</span>S<span class="op">])</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">type</span> Traversal<span class="op">[</span>F<span class="op">[</span>_<span class="op">]:</span> Applicative<span class="op">,</span> S<span class="op">,</span> T<span class="op">,</span> A<span class="op">,</span> B<span class="op">]</span> <span class="op">=</span> <span class="op">(</span>A <span class="op">=&gt;</span> F<span class="op">[</span>B<span class="op">])</span> <span class="op">=&gt;</span> <span class="op">(</span>S <span class="op">=&gt;</span> F<span class="op">[</span>T<span class="op">])</span></span></code></pre></div>
+<p>사실상 모든 Effect는 <code>Applicative</code>라고 보면 되므로, 어떤 Effect이든 Traversal을 이용하면 필드로부터 상위 구조체로 승격시킬 수 있습니다.</p>
+<p><code>F</code>라는 <code>Applicative</code> Effect가 있을 때, 다음 타입은 Profunctor, Strong, Choice, Monoidal 조건을 모두 만족합니다.</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Given applicative F[_]</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">type</span> ProF<span class="op">[</span>A<span class="op">,</span> B<span class="op">]</span> <span class="op">=</span> A <span class="op">=&gt;</span> F<span class="op">[</span>B<span class="op">]</span></span></code></pre></div>
+<p>따라서, 대입을 해 보면 자동으로 Profunctor 형태를 Applicative 형태로 바꿔줄 수 있습니다.</p>
+<p>(예를 들어 <code>travTreeLabel[ProF]</code>도 Profunctor가 됩니다)</p>
+<p>반대로 Applicative 표현에서 Profunctor 표현을 얻는 것은 어렵습니다.</p>
+<p>그런 만큼, 만약 구현을 한다면 Profunctor 위주로 구현을 한 뒤 필요할 때 Applicative 형태로 쓰는 것이 좋지 않을까 싶습니다.</p>
+<blockquote>
+<p>TODO: BinTree에 대한 Traversal들</p>
+</blockquote>
 <h2 id="용법-4">용법</h2>
+<p>위에서 짤막히 언급했듯이, 구조체의 일정 부분들에 대한 Effect 실행이 필요할 때 쓰입니다.</p>
+<p>이를 확장하여 순회 방식에도 쓸 수 있습니다.</p>
+<p>예를 들자면,</p>
+<blockquote>
+<p>TODO (예제: 합)</p>
+</blockquote>
+<blockquote>
+<p>TODO (예제: 가능성 나열)</p>
+</blockquote>
+<blockquote>
+<p>TODO (예제: 비동기 처리)</p>
+</blockquote>
 <h1 id="다루지-않은-주제들">다루지 않은 주제들</h1>
 <p>다음과 같은 optics 관련 주제들이 있습니다.</p>
 <ul>
