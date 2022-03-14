@@ -32,16 +32,22 @@
         
     </section>
     <section>
-        <p>요즘 들어 구글링을 해보면, 함수형 프로그래밍 및 개념들에 대한 튜토리얼과 설명들이 너무 잘 정리가 되어 있더군요.</p>
-<p>그래도 하나쯤 더하는 것이 크게 문제가 될까 싶어, 함수형에 대한 메모를 한번 작성해 보기로 했습니다.</p>
+        <p>요즘 들어 구글링을 해보면,
+함수형 프로그래밍 및 개념들에 대한 튜토리얼과 설명들이 너무 잘 정리가 되어 있더군요.</p>
+<p>그래도 하나쯤 더하는 것이 크게 문제가 될까 싶어,
+함수형에 대한 메모를 한번 작성해 보기로 했습니다.</p>
 <hr />
 <h1 id="들어가며">들어가며</h1>
 <p><strong>컴퓨터</strong>는 <strong>사람</strong>들의 반복적인 작업을 대체합니다. 원래 계산을 대체하기 위해 고안되었으나, 시간이 갈수록 쓰임새가 넓어지고 있죠.</p>
 <p><strong>컴퓨터</strong>는 <strong>사람</strong> 신체의 연장선상으로도 볼 수 있습니다. 사람들이 스마트폰을 자신의 일부처럼 가지고 다니는 것처럼요.</p>
 <p>그렇다면, <strong>컴퓨터</strong>에서 일어나는 작업들을 <strong>사람</strong>에 비유해 이해하는 것도 당연한 수순 아닐까요?</p>
-<p>사람들이 일하는 상황을 들여다봅시다. 이 세상에는 성실히 조건을 준수하면서 일하는 사람들도 많이 있습니다. 반대로, 시간을 못 맞춘다거나, 여러 사정/능력 부족으로 작업을 진행하지 못하는 사람도 있죠.</p>
-<p>물론 개인의 특성이야 제각기겠지만, 사람들은 전체적인 구조 속에서 아웅다웅하며 큰 일을 이루고 삶을 이끌어나갑니다.</p>
-<p>이런 사람들을 어떻게 합하여 일을 해나갈 것인가. 이런 관점에서 함수형 프로그래밍을 서술해 보고자 합니다.</p>
+<p>사람들이 일하는 상황을 들여다봅시다.
+이 세상에는 성실히 조건을 준수하면서 일하는 사람들도 많이 있습니다.
+반대로, 시간을 못 맞춘다거나, 여러 사정/능력 부족으로 작업을 진행하지 못하는 사람도 있죠.</p>
+<p>물론 개인의 특성이야 제각기겠지만,
+사람들은 전체적인 구조 속에서 아웅다웅하며 큰 일을 이루고 삶을 이끌어나갑니다.</p>
+<p>이런 사람들을 어떻게 합하여 일을 해나갈 것인가.
+이런 관점에서 함수형 프로그래밍을 서술해 보고자 합니다.</p>
 <hr />
 <h1 id="순수성-pure">순수성 (Pure)</h1>
 <p>(여담으로, <em>순수</em>라는 이상한 이름은 대체 누가 지은 걸까요. <em>순수의 시대</em>도 아니고..)</p>
@@ -65,12 +71,16 @@
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>반대로 변수는 때마다 다르니까, 순수하다고 보기 어렵겠죠.</p>
 <hr />
-<p>목록이 주어졌을 때, 이걸 다 더해서 넘겨주는 작업도 예외 없이 수행이 가능하겠죠. 처음부터 n번째까지 합한 결과를 보여주는 목록도 만들 수 있을 겁니다.</p>
+<p>목록이 주어졌을 때, 이걸 다 더해서 넘겨주는 작업도 예외 없이 수행이 가능하겠죠.
+처음부터 n번째까지 합한 결과를 보여주는 목록도 만들 수 있을 겁니다.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span> (l) { <span class="op">...</span> }       <span class="co">/* sum ([3, 1, 2, 0]) == 6 */</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">accumSum</span> (l) { <span class="op">...</span> }  <span class="co">/* accumsum ([3, 1, 2, 0]) == [0, 3, 4, 6, 6] */</span></span></code></pre></div>
-<p>다만, 기존의 목록을 덮어씌워버리면 원래의 목록으로는 더 이상 작업을 할 수 없기에, 이렇게 덮어씌우는 작업은 제한해야 합니다.</p>
+<p>다만, 기존의 목록을 덮어씌워버리면 원래의 목록으로는 더 이상 작업을 할 수 없기에,
+이렇게 덮어씌우는 작업은 제한해야 합니다.</p>
 <hr />
-<p>반면, 화면에 출력하는 작업은 안내 게시판에 올리는 것으로 비유할 수 있습니다. 모두가 볼 수 있게 만드는 것인데, 영향을 미치니까 순수 함수가 아니죠. 물론 입력하는 작업도 마찬가지로 순수한 함수가 아닙니다.</p>
+<p>반면, 화면에 출력하는 작업은 안내 게시판에 올리는 것으로 비유할 수 있습니다.
+모두가 볼 수 있게 만드는 것인데, 영향을 미치니까 순수 함수가 아니죠.
+물론 입력하는 작업도 마찬가지로 순수한 함수가 아닙니다.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> d <span class="op">=</span> <span class="dv">3</span><span class="op">;</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    printf <span class="op">(</span><span class="st">&quot;%d&quot;</span><span class="op">,</span> d<span class="op">);</span>   <span class="co">// Learn to respect display!</span></span>
@@ -78,14 +88,18 @@
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>이런건 특별한 권한을 부여하는 게 맞겠죠.</p>
 <hr />
-<p>한편으로, 처리해줘야 하는 에러를 발생시키는 함수도 있겠죠. 가령, 목록에서 첫번째를 가져오는 작업에 빈 목록을 줘 버리면 꿀 먹은 벙어리가 될 수밖에요.</p>
+<p>한편으로, 처리해줘야 하는 에러를 발생시키는 함수도 있겠죠.
+가령, 목록에서 첫번째를 가져오는 작업에 빈 목록을 줘 버리면 꿀 먹은 벙어리가 될 수밖에요.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">first</span> (l) { <span class="op">...</span> }   <span class="co">/* first ([1, 2, 3]) == 1,  first ([]) = ??? */</span></span></code></pre></div>
-<p>이것도 순수 함수가 아니지만, 에러를 표현하는 방식을 찾으면 순수 함수로 개조시킬 수 있습니다. 순수함수와 일반 작업, 두 관점 모두 가능한 것이죠.</p>
-<p>이 다양한 것들을 어떻게 하면 조화롭게 합칠 수 있을까요. 잠시만, 합친다는게 정확히 뭐죠?</p>
+<p>이것도 순수 함수가 아니지만, 에러를 표현하는 방식을 찾으면 순수 함수로 개조시킬 수 있습니다.
+순수함수와 일반 작업, 두 관점 모두 가능한 것이죠.</p>
+<p>이 다양한 것들을 어떻게 하면 조화롭게 합칠 수 있을까요.
+잠시만, 합친다는게 정확히 뭐죠?</p>
 <hr />
 <hr />
 <h1 id="합성-compose">합성 (Compose)</h1>
-<p>합친다는 것에는 여러 의미가 있지만, 우리의 목적으로서 구성요소들을 모아 그 이상의 조직을 이뤄낸다는 데 의의가 있을 듯 합니다.</p>
+<p>합친다는 것에는 여러 의미가 있지만,
+우리의 목적으로서 구성요소들을 모아 그 이상의 조직을 이뤄낸다는 데 의의가 있을 듯 합니다.</p>
 <p>작은 작업들을 모아서 큰 작업을 만드는 방식엔 어떤 것들이 있을까요?</p>
 <p>다들 잘 아는 방식으로, 변수에 이름을 지어준 다음 나중에 쓰는 방식이 있겠죠.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> gradOf <span class="op">=</span> <span class="op">(</span>student<span class="op">,</span> year<span class="op">)</span> <span class="op">=&gt;</span> <span class="op">{</span></span>
@@ -105,7 +119,8 @@
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    z <span class="op">=</span> <span class="op">(</span>personB ∘ personA<span class="op">)</span> <span class="op">(</span>x<span class="op">)</span></span></code></pre></div>
 <hr />
 <p>한편, 합치는 문제는 <strong>나</strong>와 <strong>너</strong>의 관점에서 볼 수도 있습니다. 공동체 속의 <strong>나</strong>이니까요.</p>
-<p>아마 함수형에서는 함수를 포함해 무엇이든지 값으로 본다는 것을 알고 계실 겁니다. 이 관점에 따르면, 어떤 <em>나</em>이든지간에 <em>전체</em> 속에서의 값으로 볼 수 있습니다.</p>
+<p>아마 함수형에서는 함수를 포함해 무엇이든지 값으로 본다는 것을 알고 계실 겁니다.
+이 관점에 따르면, 어떤 <em>나</em>이든지간에 <em>전체</em> 속에서의 값으로 볼 수 있습니다.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> entire <span class="op">=</span> <span class="op">{</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">...</span>                 <span class="co">// other</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> me <span class="op">=</span> <span class="op">{</span> <span class="op">...</span> <span class="op">}</span>    <span class="co">// me</span></span>
@@ -120,7 +135,8 @@
 <p><code>1</code> 을 나로 잡으면 <code>other = (me) =&gt; ((x) =&gt; { (x + me) * (x * 2) })</code> 가 됩니다.</p>
 <p>또, <code>x + 1</code> 를 나로 잡으면 <code>other = (me) =&gt; ((x) =&gt; { me * 2 })</code> 가 됩니다.</p>
 <p><code>x * 2</code>를 나로 잡으면 <code>other = (me) =&gt; ((x) =&gt; { (x + 1) * me })</code> 가 되구요.</p>
-<p>여기서 <code>other</code> 부분은 계속 할 작업이란 의미에서 <em>Continuation</em>이라 부릅니다. 앞으로의 설명을 위해 유용하게 사용할 개념입니다.</p>
+<p>여기서 <code>other</code> 부분은 계속 할 작업이란 의미에서 <em>Continuation</em>이라 부릅니다.
+앞으로의 설명을 위해 유용하게 사용할 개념입니다.</p>
 <hr />
 <hr />
 <h1 id="개성-있는-함수와-조직">개성 있는 함수와 조직</h1>
@@ -145,7 +161,8 @@
 <blockquote>
 <p><code>otherC : Char[Me] =&gt; Char[Entire]</code></p>
 </blockquote>
-<p><code>other</code>가 주어졌을 때, <code>otherC</code> 를 자동으로 만들 수 있다면 좋겠죠? 굳이 <code>Me</code>, <code>Entire</code>가 무엇인지를 고민할 필요가 없다면 더 좋을 것입니다.</p>
+<p><code>other</code>가 주어졌을 때, <code>otherC</code> 를 자동으로 만들 수 있다면 좋겠죠?
+굳이 <code>Me</code>, <code>Entire</code>가 무엇인지를 고민할 필요가 없다면 더 좋을 것입니다.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Char.map[A][B]: (A =&gt; B) =&gt; (Char[A] =&gt; Char[B]), (모든 A, B에 대해 동작)</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>otherC <span class="op">=</span> <span class="bu">Char</span><span class="op">.</span><span class="fu">map</span> <span class="op">(</span>other<span class="op">)</span></span></code></pre></div>
 <p>이게 가능한 경우를 통틀어 <strong>펑터</strong>라 합니다. <code>Char</code>의 <strong>특징</strong>이죠.</p>
@@ -165,8 +182,10 @@
 <p>개성이 같은 친구라고 잘 어우러지지는 않겠죠.</p>
 <p><code>other &lt;|Char.map|&gt; me &lt;|Char.ap|&gt; you</code></p>
 <h2 id="monad-모나드">Monad (모나드)</h2>
-<p>하지만 조직 전체가 개성을 가진 경우도 있죠. 개성을 가진 A의 작업 결과를 개성을 가진 B에게 넘겨줘야 하는 경우도 많구요.</p>
-<p>사실 Applicative에선 서로의 결과를 확인할 수 없었습니다. 동시에 작업하는 경우야 그렇게 하겠지만, 모든 게 그렇게 해결되지는 않지요.</p>
+<p>하지만 조직 전체가 개성을 가진 경우도 있죠.
+개성을 가진 A의 작업 결과를 개성을 가진 B에게 넘겨줘야 하는 경우도 많구요.</p>
+<p>사실 Applicative에선 서로의 결과를 확인할 수 없었습니다.
+동시에 작업하는 경우야 그렇게 하겠지만, 모든 게 그렇게 해결되지는 않지요.</p>
 <hr />
 <h1 id="예제들-functorapplicativemonad">예제들 (Functor/Applicative/Monad)</h1>
 <p>이제 예제를 한번 찾아봅시다.</p>
@@ -191,7 +210,8 @@
 <hr />
 <hr />
 <h1 id="서로-다른-개성을-수용하기">서로 다른 개성을 수용하기</h1>
-<p>지금까지는 같은 개성을 가진 친구들을 모아봤습니다. 서로 다른 개성을 가진 경우에는 어떻게 하면 될까요?</p>
+<p>지금까지는 같은 개성을 가진 친구들을 모아봤습니다.
+서로 다른 개성을 가진 경우에는 어떻게 하면 될까요?</p>
 <hr />
 <h2 id="functor-applicative-자동으로-합치기">Functor &amp; Applicative: 자동으로 합치기</h2>
 <p>의외로, 펑터와 어플리커티브의 경우에는 그렇게 어렵지 않습니다.</p>
