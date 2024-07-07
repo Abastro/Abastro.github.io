@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta http-equiv="cache-control" content="max-age=0">
+        <meta http-equiv="cache-control" content="no-cache">        
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Blog Abs - Functional spaces</title>
+        <link rel="stylesheet" href="../../assets/fontawesome/css/all.css" />
+        <link rel="stylesheet" href="../../css/default.css" />
+        <link rel="stylesheet" href="../../css/syntax.css" />
+    </head>
+    <body>
+        <header>
+            <div class="logo">
+                <a href="../../mathematics">Blog Abs</a>
+            </div>
+            <nav>
+                <a href="../../mathematics"><i class="fa-solid fa-house"></i></a>
+                <a href="../../mathematics/about.html"><i class="fa-solid fa-circle-question"></i></a>
+                <a href="../../mathematics/archive.html"><i class="fa-solid fa-box-open"></i></a>
+            </nav>
+        </header>
+
+        <main role="main">
+            <h1>Functional spaces</h1>
+            <article>
+    <section class="header">
+        Posted on July  7, 2024
+        
+    </section>
+    <section>
+        <h1 id="normed-vector-spaces">Normed vector spaces</h1>
+<p>Consider <span class="math inline">\(X\)</span>, a vector space over an analytic field <span class="math inline">\(F\)</span>, i.e., <span class="math inline">\(F = \mathbb{R}\text{ or } \mathbb{C}\)</span>.</p>
+<div class="definition">
+<p><strong>Definition 1</strong>.  <span class="math inline">\(p : X \to [0, \infty)\)</span> is called a <strong>semi-norm</strong> if</p>
+<ol>
+<li><p>Subadditive, <span class="math inline">\(p(x+y) \leq p(x) + p(y)\)</span>.</p></li>
+<li><p>Sublinear, <span class="math inline">\(p(\lambda x) = \left| \lambda \right| p(x)\)</span> (<span class="math inline">\(\lambda \geq 0\)</span>).</p></li>
+</ol>
+</div>
+<div class="definition">
+<p><strong>Definition 2</strong>.  A semi-norm <span class="math inline">\(\left\| \text{-} \right\| : X \to [0, \infty)\)</span> is called a <strong>norm</strong> in <span class="math inline">\(X\)</span>
+if <span class="math inline">\(\left\| x \right\| = 0\)</span> if and only if <span class="math inline">\(x = 0\)</span>.</p>
+<p>A vectorspace with a norm is called a <strong>normed (vector)space</strong>.</p>
+</div>
+<div class="remark">
+<p><em>Remark 1</em>.  A normed space has a canonical metric <span class="math inline">\(d(x, y) = \left\| x - y \right\|\)</span>.</p>
+</div>
+<div class="remark">
+<p><em>Remark 2</em>.  Any subspace of a normed space is clearly a normed space.</p>
+</div>
+<div class="definition">
+<p><strong>Definition 3</strong>.  A category of normed spaces is given by</p>
+<ul>
+<li><p>Objects: Normed spaces <span class="math inline">\((X, \left\| \text{-} \right\|_X)\)</span>.</p></li>
+<li><p>Morphisms: Continuous linear maps <span class="math inline">\(T: X \to Y\)</span>.</p></li>
+</ul>
+<p>The morphisms are called <strong>bounded linear maps</strong>, for the following reason.</p>
+</div>
+<div class="proposition">
+<p><strong>Proposition 1</strong>.  <em>The following are equivalent for a linear map <span class="math inline">\(T : X \to Y\)</span> between normed spaces.</em></p>
+<ol>
+<li><p><em> <span class="math inline">\(T\)</span> is continuous.</em></p></li>
+<li><p><em> <span class="math inline">\(T\)</span> is continuous at <span class="math inline">\(0\)</span>.</em></p></li>
+<li><p><em> <span class="math inline">\(T\)</span> is <strong>bounded</strong>, i.e., <span class="math inline">\(\left\| Tx \right\|_Y \leq c \left\| x \right\|_X\)</span> for a constant <span class="math inline">\(c &gt; 0\)</span>.</em></p></li>
+</ol>
+</div>
+<div class="proof">
+<p><em>Proof.</em> <span class="math inline">\(\ref{bdd-map:bounded} \Rightarrow \ref{bdd-map:conti}\)</span> is given by Lipschitz continuity,
+as <span class="math inline">\(\left\| Tx - Ty \right\|_Y \leq c \left\| x - y \right\|_X\)</span>.
+<span class="math inline">\(\ref{bdd-map:conti} \Rightarrow \ref{bdd-map:conti-0}\)</span> is obvious.
+For <span class="math inline">\(\ref{bdd-map:conti-0} \Rightarrow \ref{bdd-map:bounded}\)</span>,
+notice that a <span class="math inline">\(\delta\)</span>-ball at <span class="math inline">\(0 \in X\)</span> should map inside the unit ball in <span class="math inline">\(Y\)</span>.
+Then, scaling puts a uniform bound at <span class="math inline">\(\left\| Tx \right\|_Y / \left\| x \right\|_X\)</span>. ◻</p>
+</div>
+<p>Note that notion of quotient space carries over from vector spaces.</p>
+<div class="proposition">
+<p><strong>Proposition 2</strong>.  <em>If <span class="math inline">\(M\)</span> is a closed subspace of <span class="math inline">\(X\)</span>,
+the quotient space <span class="math inline">\(X/M\)</span> is a normed space with a norm <span class="math inline">\(\left\| x + M \right\| = \inf_{y \in M} \left\| x+y \right\|\)</span>,
+and the projection <span class="math inline">\(X \to X/M\)</span> is bounded (by 1).</em></p>
+</div>
+<div class="definition">
+<p><strong>Definition 4</strong>.  A <strong>Banach space</strong> is a normed space which is complete as a metric space.</p>
+</div>
+<p>The following criteria can be used to show a normed space is a Banach space.</p>
+<div class="theorem">
+<p><strong>Theorem 3</strong>.  <em>A normed space <span class="math inline">\(X\)</span> is complete as a metric space
+if and only if absolutely convergent series in <span class="math inline">\(X\)</span> converges.</em></p>
+</div>
+<h1 id="lp-spaces"><span class="math inline">\(L^p\)</span> spaces</h1>
+<p><span class="math inline">\(L^p\)</span> spaces are important examples of Banach spaces.</p>
+<p>Fix a complete measure space <span class="math inline">\((X, \mathcal{M}, \mu)\)</span>.</p>
+<div class="definition">
+<p><strong>Definition 5</strong>.  For <span class="math inline">\(p \in [1, \infty)\)</span>, a <span class="math inline">\(p\)</span>-norm of <span class="math inline">\(f \in \hom(X, \mathbb{C})\)</span> is
+<span class="math display">\[\left\| f \right\|_p := \left( \int \left| f \right|^p d\mu \right)^{1/p} \in [0, \infty].\]</span>
+An <span class="math inline">\(L^p\)</span>-space is, then,
+<span class="math display">\[L^p(X, \mathcal{M}, \mu) := \{ f \in \hom(X, \mathbb{C}) \mid \lVert f \rVert_p &lt; \infty \} / \sim.\]</span>
+with equality given as <span class="math inline">\(f \sim g\)</span> when <span class="math inline">\(f = g\)</span> <span class="math inline">\(\mu\)</span>-almost everywhere.</p>
+</div>
+<div class="definition">
+<p><strong>Definition 6</strong>.  A <span class="math inline">\(\infty\)</span>-norm on <span class="math inline">\(\hom(X, \mathbb{C})\)</span> is
+<span class="math display">\[\left\| f \right\|_\infty := \inf \{ a \geq 0 : \left| f \right| \leq a \; \mu\text{-a.e.}\}\]</span>
+Then, <span class="math inline">\(L^\infty\)</span>-space is defined analogously as above.</p>
+</div>
+<p>To justify the name, <span class="math inline">\(p\)</span>-norm should be a norm of <span class="math inline">\(L^p\)</span> space.</p>
+<div class="theorem">
+<p><strong>Theorem 4</strong> (Hölder inquality).  <em>Suppose <span class="math inline">\(1 &lt; p &lt; \infty\)</span> and <span class="math inline">\(\frac{1}{p} + \frac{1}{q} = 1\)</span>.
+Then, <span class="math inline">\(\left\| fg \right\|_1 \leq \left\| f \right\|_p \left\| g \right\|_q\)</span> for <span class="math inline">\(f, g \in \hom(X, \mathbb{C})\)</span>.
+In particular, if <span class="math inline">\(f \in L^p\)</span>, <span class="math inline">\(g \in L^q\)</span>, then <span class="math inline">\(fg \in L^1\)</span>.</em></p>
+</div>
+<div class="proof">
+<p><em>Proof.</em> We may assume <span class="math inline">\(\left\| f \right\|_p, \left\| g \right\|_q \in (0, \infty)\)</span>, as the inequality is obvious on boundary conditions.
+Then, we may normalize by <span class="math inline">\(f \leftarrow \frac{f}{\left\| f \right\|_p}, g \leftarrow \frac{g}{\left\| g \right\|_q}\)</span>,
+so that the goal is <span class="math inline">\(\left\| f \cdot g \right\|_1 \leq 1\)</span>.
+By integrating the following
+<span class="math display">\[\left| f(x)g(x) \right| \leq \frac{1}{p} \left| f(x) \right|^p + \frac{1}{q} \left| g(x) \right|^q,\]</span>
+one obtains <span class="math inline">\(\left\| f \cdot g \right\|_1 \leq \left\| f \right\|_p^p / p + \left\| g \right\|_q^q / q = 1\)</span>, as desired. ◻</p>
+</div>
+<div class="lemma">
+<p><strong>Lemma 5</strong> (Minkowski’s inequality).  <em>For all <span class="math inline">\(1 \leq p &lt; \infty\)</span> and <span class="math inline">\(f, g \in L^p\)</span>, <span class="math inline">\(\left\| f + g \right\|_p \leq \left\| f \right\|_p + \left\| g \right\|_p\)</span>.</em></p>
+</div>
+<div class="theorem">
+<p><strong>Theorem 6</strong>.  <em><span class="math inline">\(L^p\)</span> is a Banach space.</em></p>
+</div>
+    </section>
+</article>
+
+        </main>
+
+        <footer>
+            <nav>
+                <a href="../../mathematics"><i class="fa-solid fa-house"></i></a>
+                <a href="../../mathematics/about.html"><i class="fa-solid fa-circle-question"></i></a>
+                <a href="../../mathematics/archive.html"><i class="fa-solid fa-box-open"></i></a>
+            </nav>
+        </footer>
+    </body>
+</html>
