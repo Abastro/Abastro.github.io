@@ -30,6 +30,10 @@ div.sourceCode {
   border: 1px solid #555;
 }
 
+div.center {
+  text-align: center;
+}
+
 p code {
   background-color: #232629;
   border:1px solid #333;
@@ -98,6 +102,10 @@ article .header {
 
 .hakyll {
   color: #444;
+}
+
+img {
+  min-width: 20rem;
 }
 
 /* Front page logo */

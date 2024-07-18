@@ -28,16 +28,13 @@ differentials</title>
             <h1>Manifolds and First order differentials</h1>
             <article>
                 <section class="header">
-                    Posted on 2024-07-14
+                    Posted on 2024-07-18
                         </section>
                 <section>
                     <h1 id="manifolds-and-vector-bundles">Manifolds and
                     Vector bundles</h1>
                     <h2 id="basic-notions-of-manifolds">Basic notions of
                     Manifolds</h2>
-                    <div class="center">
-
-                    </div>
                     <div class="remark">
                     <p><em>Remark 1</em>. A line with two origins is
                     locally Euclidean, but not Hausdorff. Since these
@@ -175,7 +172,9 @@ differentials</title>
                     class="math inline">\(E_p := \pi^{-1}(p)\)</span>
                     has corresponding consistent linear structure.</p>
                     <div class="center">
-
+                    <p><img
+                    src="./0a0c893df6a7799bc0356173ba0efb93d825bcc9.svg"
+                    title="0a0c893df6a7799bc0356173ba0efb93d825bcc9" /></p>
                     </div></li>
                     <li><p>Morphisms: A <strong>bundle map</strong> over
                     <span class="math inline">\(B\)</span> is a smooth
@@ -183,7 +182,9 @@ differentials</title>
                     E_2\)</span> over <span class="math inline">\(E_i
                     \to B\)</span> which is linear on each fiber.</p>
                     <div class="center">
-
+                    <p><img
+                    src="./db70d2ef16b7599494bd10927a40ceb4be9b3fec.svg"
+                    title="db70d2ef16b7599494bd10927a40ceb4be9b3fec" /></p>
                     </div></li>
                     </ul>
                     <p>Similarly, morphisms can be defined over <span
@@ -376,7 +377,9 @@ differentials</title>
                     class="math inline">\(\phi^* \pi : Y \times_M E \to
                     Y\)</span>.</p>
                     <div class="center">
-
+                    <p><img
+                    src="./840d8579adb564e3ca0cee8bd3a3c8cd5df4e573.svg"
+                    title="840d8579adb564e3ca0cee8bd3a3c8cd5df4e573" /></p>
                     </div>
                     <p>Then, <span class="math inline">\(\phi^* \pi :
                     \phi^* E \to Y\)</span> is called the
@@ -550,7 +553,7 @@ differentials</title>
                     class="math inline">\(p \in U&#39; \subset
                     U\)</span>.</p>
                     <p>The same works for pointed spaces as well; we
-                    will denote <span
+                    will denote the germs of curves as <span
                     class="math inline">\(\mathfrak{C}_p M := C^\infty_0
                     (\mathbb{R}_0, M_p)\)</span>.</p>
                     </div>
@@ -585,8 +588,11 @@ differentials</title>
                     \mathfrak{C}_p M / \sim\)</span> where equivalence
                     is given by being the same on the image <span
                     class="math inline">\(V\)</span>. Further, <span
-                    class="math inline">\(T_p M\)</span> has a
-                    vectorspace structure.</em></p>
+                    class="math inline">\(T_p M\)</span> inherits the
+                    <span
+                    class="math inline">\(\mathbb{R}\)</span>-vectorspace
+                    structure, and <span class="math inline">\(T_p M
+                    \simeq V\)</span>.</em></p>
                     </div>
                     <div class="definition">
                     <p><strong>Definition 16</strong>. <span
@@ -606,7 +612,9 @@ differentials</title>
                     are naturally isomorphic to each other.</p>
                     <p>In other words, one has a commuting diagram</p>
                     <div class="center">
-
+                    <p><img
+                    src="./22c3284166aff1e8c59a6467f0c6e8cbb7cbde9a.svg"
+                    title="22c3284166aff1e8c59a6467f0c6e8cbb7cbde9a" /></p>
                     </div>
                     <p>that is commutative over all such maps. The red
                     colored map is given by Jacobi matrix <span
@@ -624,10 +632,10 @@ differentials</title>
                         (F : M_p \to N_{F(p)}) &amp; \mapsto &amp; (dF_p
                     : T_p M \to T_{F(p)} N)
                       \end{matrix}\]</span> where <span
-                    class="math inline">\(dF_p\)</span> sends <span
-                    class="math inline">\(\gamma \mapsto F \circ
-                    \gamma\)</span>; this is well-defined considering
-                    the charts.</p>
+                    class="math inline">\(dF_p\)</span> is <span
+                    class="math inline">\(F_*\)</span> cut under
+                    equivalences; this is well-defined considering the
+                    charts.</p>
                     <p>The tangent space has a canonical ‘action’ on
                     functions <span
                     class="math inline">\(C^\infty(M)\)</span>, given as
@@ -679,8 +687,8 @@ differentials</title>
                     class="math inline">\(U_\alpha \times V \to TM|_U
                     \to U_\beta \times V\)</span>. That is, <span
                     class="math display">\[\begin{matrix}
-                          U_\alpha \cap U_\beta &amp; \to &amp; \hom(V,
-                    V) \\
+                          U_\alpha \cap U_\beta &amp; \to &amp;
+                    \mathop{\mathrm{End}}V \\
                           p &amp; \mapsto &amp; (v \mapsto d\phi_{\beta,
                     p} \circ (d\phi_{\alpha, p})^{-1} v)
                         \end{matrix}\]</span> Since <span
@@ -697,8 +705,10 @@ differentials</title>
                     spaces.</p>
                     </div>
                     <div class="fact">
-                    <p><em>Fact 2</em>. Analogous construction fails on
-                    the second differential or above.</p>
+                    <p><em>Fact 2</em>. Analogous construction fails to
+                    be a vector bundle on the second differential or
+                    above. Instead, the <strong>jet bundles</strong> are
+                    <em>fiber</em> bundles.</p>
                     </div>
                     <p>Tangent bundle gives a functor <span
                     class="math display">\[\begin{matrix}
@@ -706,15 +716,58 @@ differentials</title>
                         M &amp; \mapsto &amp; TM \\
                         (f : M \to N) &amp; \mapsto &amp; (df : TM \to
                     TN)
-                      \end{matrix}.\]</span></p>
-                    <p>Normal bundle, <span class="math inline">\(T_Y
-                    \hookrightarrow T_M|_Y\)</span></p>
-                    <p><span class="math inline">\(\pi^* TN
-                    \twoheadrightarrow TM\)</span></p>
+                      \end{matrix}.\]</span> where <span
+                    class="math inline">\(df(p, v) = (f(p), df_p
+                    v)\)</span>.</p>
+                    <p>There are couple of important bundles derived
+                    from tangent bundles and pullback bundles.</p>
+                    <div class="remark">
+                    <p><em>Remark 12</em>. Given a map <span
+                    class="math inline">\(f: X \to Y\)</span>, the
+                    functorial map <span class="math inline">\(TX \to
+                    TY\)</span> induces <span class="math inline">\(df :
+                    TX \to f^* TY\)</span> by universal property of
+                    pullback bundles; this is a map over <span
+                    class="math inline">\(\mathbf{Vect}_X\)</span>.</p>
+                    </div>
+                    <div class="definition">
+                    <p><strong>Definition 18</strong>. Given a
+                    submanifold <span class="math inline">\(\iota : Y
+                    \hookrightarrow M\)</span>, the <strong>normal
+                    bundle</strong> of <span
+                    class="math inline">\(Y\)</span> on <span
+                    class="math inline">\(M\)</span> is the quotient
+                    bundle <span class="math inline">\(N_{M/Y} := TM|_Y
+                    / TY\)</span>, where the inclusion is <span
+                    class="math inline">\(TY \to \iota^* TM =
+                    TM|_Y\)</span>.</p>
+                    </div>
+                    <div class="definition">
+                    <p><strong>Definition 19</strong>. Given a
+                    <em>surjective submersion</em> <span
+                    class="math inline">\(\pi : M \to N\)</span>, the
+                    <strong>vertical tangent bundle</strong> of <span
+                    class="math inline">\(\pi\)</span> is the kernel
+                    <span class="math inline">\(T_\pi M = \ker (d \pi :
+                    TM \twoheadrightarrow \pi^* TN)\)</span>.</p>
+                    </div>
+                    <div class="remark">
+                    <p><em>Remark 13</em>. Under the above definitions,
+                    one has short exact sequences <span
+                    class="math display">\[0 \to TY \to TM|_Y \to
+                    N_{M/Y} \to 0,\]</span> <span
+                    class="math display">\[0 \to T_\pi M \to TM \to
+                    \pi^* TN \to 0.\]</span></p>
+                    </div>
                     <h2 id="rank-of-a-smooth-map">Rank of a smooth
                     map</h2>
+                    <p>Rank of a smooth map arises from first order
+                    differential structure, but for the reason tangent
+                    spaces ‘represent’ model space, it takes an
+                    important role in characterizing relations like
+                    diffeomorphisms and embeddings.</p>
                     <div class="definition">
-                    <p><strong>Definition 18</strong>. Given a smooth
+                    <p><strong>Definition 20</strong>. Given a smooth
                     map <span class="math inline">\(F : M \to
                     N\)</span>, its <strong>rank</strong> at <span
                     class="math inline">\(p \in M\)</span> is <span
@@ -727,10 +780,8 @@ differentials</title>
                     <strong>rank</strong> of map <span
                     class="math inline">\(F\)</span>.</p>
                     </div>
-                    <p>Rank is analogous to the rank for the model
-                    spaces.</p>
                     <div class="definition">
-                    <p><strong>Definition 19</strong>. A map <span
+                    <p><strong>Definition 21</strong>. A map <span
                     class="math inline">\(F : M \to N\)</span> of
                     constant rank is called</p>
                     <ul>
@@ -742,16 +793,128 @@ differentials</title>
                     N\)</span>.</p></li>
                     </ul>
                     </div>
-                    <div class="remark">
-                    <p><em>Remark 12</em>. If a map is both an immersion
-                    and a submersion, then it is a local diffeomorphism,
-                    i.e., <span class="math inline">\(F|_U : U \to
-                    F(U)\)</span> is a diffeomorphism for a covering
-                    <span class="math inline">\(U\)</span>’s.</p>
+                    <p>That is, <span
+                    class="math inline">\(dF_p\)</span> is injective if
+                    <span class="math inline">\(F\)</span> is an
+                    immersion, and <span
+                    class="math inline">\(dF_p\)</span> is surjective if
+                    <span class="math inline">\(F\)</span> is a
+                    submersion.</p>
+                    <div class="lemma">
+                    <p><strong>Lemma 9</strong> (Semicontinuity of
+                    rank). <em> For a smooth map <span
+                    class="math inline">\(F : M \to N\)</span>, rank of
+                    <span class="math inline">\(F\)</span> is
+                    lower-semicontinuous, i.e., for <span
+                    class="math inline">\(rk_p F = r\)</span> there is
+                    an open neighborhood of <span
+                    class="math inline">\(p\)</span> where rank is
+                    higher than <span
+                    class="math inline">\(r\)</span>.</em></p>
+                    </div>
+                    <div class="proof">
+                    <p><em>Proof.</em> Fix charts for <span
+                    class="math inline">\(F\)</span> near <span
+                    class="math inline">\(p\)</span>, which gives a
+                    smooth map <span class="math inline">\(A : U \to
+                    \mathop{\mathrm{Hom}}(V, W)\)</span> corresponding
+                    to <span class="math inline">\(q \mapsto
+                    dF_q\)</span>. Since <span
+                    class="math inline">\(rk_q F = rk A(q)\)</span>,
+                    enough to show lower-semicontinuity of rank of <span
+                    class="math inline">\(A(q)\)</span>. Take the <span
+                    class="math inline">\(r\)</span>-dimensional
+                    subspaces <span class="math inline">\(\tilde{V} \leq
+                    V, \tilde{W} \leq W\)</span> on which <span
+                    class="math inline">\(A(p)\)</span> is invertible.
+                    Notice <span class="math inline">\(\det A(p) \neq
+                    0\)</span> on this restriction. Since <span
+                    class="math inline">\(q \mapsto \det A(q)\)</span>
+                    is continuous, it is locally nonzero, showing the
+                    lower-semicontinuity. ◻</p>
+                    </div>
+                    <div class="theorem">
+                    <p><strong>Theorem 10</strong> (Inverse function
+                    theorem). <em>If <span
+                    class="math inline">\(dF_p\)</span> is invertible,
+                    then <span class="math inline">\(F\)</span> is
+                    <strong>locally diffeomorphic at</strong> <span
+                    class="math inline">\(p\)</span>, i.e., <span
+                    class="math inline">\(F|_U : U \to V\)</span> is a
+                    diffeomorphism for some neighborhood <span
+                    class="math inline">\(U\)</span> of <span
+                    class="math inline">\(p\)</span>, <span
+                    class="math inline">\(V\)</span> of <span
+                    class="math inline">\(F(p)\)</span>.</em></p>
+                    </div>
+                    <div class="proof">
+                    <p><em>Proof.</em> By Lemma <span
+                    class="math inline">\(\ref{rank-semicontinuity}\)</span>,
+                    <span class="math inline">\(F\)</span> has locally
+                    full rank. Fix the charts for <span
+                    class="math inline">\(F\)</span> near <span
+                    class="math inline">\(p\)</span>, so that we may
+                    regard <span class="math inline">\(F : V \to
+                    W\)</span>, on which <span
+                    class="math inline">\(dF_q\)</span> is
+                    invertible. ◻</p>
+                    </div>
+                    <div class="corollary">
+                    <p><strong>Corollary 11</strong>. <em>If a map <span
+                    class="math inline">\(F\)</span> is both an
+                    immersion and a submersion, then it is a
+                    <strong>local diffeomorphism</strong>, i.e., <span
+                    class="math inline">\(F|_U : U \to V\)</span> is a
+                    diffeomorphism for a covering <span
+                    class="math inline">\(U\)</span>’s and <span
+                    class="math inline">\(V\)</span>’s.</em></p>
+                    </div>
+                    <div class="corollary">
+                    <p><strong>Corollary 12</strong> (Characterization
+                    of diffeomorphism). <em>A map is a diffeomorphism if
+                    and only if it is both an immersion, a submersion,
+                    and a bijection.</em></p>
+                    </div>
+                    <div class="proof">
+                    <p><em>Proof.</em> Enough to prove the converse
+                    direction. Once a bijection is a local
+                    diffeomorphism, its inverse map is also clearly a
+                    local diffeomorphism (by symmetry), so the two
+                    together forms a diffeomorphism. ◻</p>
+                    </div>
+                    <div class="theorem">
+                    <p><strong>Theorem 13</strong> (Rank Theorem).
+                    <em>If a map <span class="math inline">\(F : M \to
+                    N\)</span> has a rank <span class="math inline">\(r
+                    \leq m = \dim M\)</span> at <span
+                    class="math inline">\(p \in M\)</span>, there are
+                    charts <span class="math inline">\(U \simeq
+                    W\)</span> and <span class="math inline">\(V \simeq
+                    W&#39;\)</span> such that <span
+                    class="math inline">\(F|_U : U \to V\)</span> is
+                    isomorphic to <span
+                    class="math inline">\(\mathfrak{F}: W \to
+                    W&#39;\)</span> where <span
+                    class="math inline">\(\mathfrak{F}\)</span> being a
+                    linear map onto <span
+                    class="math inline">\(r\)</span>-dimensional
+                    subspace.</em></p>
+                    </div>
+                    <div class="theorem">
+                    <p><strong>Theorem 14</strong> (Global Rank
+                    Theorem). <em>Suppose <span class="math inline">\(F
+                    : M \to N\)</span> is a smooth map of constant
+                    rank.</em></p>
+                    <ol>
+                    <li><p><em>If <span class="math inline">\(F\)</span>
+                    is injective, it is an immersion.</em></p></li>
+                    <li><p><em>If <span class="math inline">\(F\)</span>
+                    is surjective, it is a submersion.</em></p></li>
+                    </ol>
                     </div>
                     <h1 id="connections">Connections</h1>
                     <div class="definition">
-                    <p><strong>Definition 20</strong>. An <strong>affine
+                    <p><strong>Definition 22</strong>. An <strong>affine
                     connection</strong> is an <span
                     class="math inline">\(\mathbb{R}\)</span>-bilinear
                     map <span class="math display">\[\nabla :
