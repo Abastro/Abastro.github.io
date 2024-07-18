@@ -1,0 +1,650 @@
+<!doctype html>
+<html lang="en">
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta http-equiv="cache-control" content="max-age=0">
+        <meta http-equiv="cache-control" content="no-cache">        
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Blog Abs - Measure Spaces</title>
+        <link rel="stylesheet" href="../assets/fontawesome/css/all.css" />
+        <link rel="stylesheet" href="../css/default.css" />
+        <link rel="stylesheet" href="../css/syntax.css" />
+    </head>
+    <body>
+        <header>
+            <div class="logo">
+                <a href="..">Blog Abs</a>
+            </div>
+            <nav>
+                <a href=".."><i class="fa-solid fa-house"></i></a>
+                <a href="../about.html"><i class="fa-solid fa-circle-question"></i></a>
+                <a href="../archive.html"><i class="fa-solid fa-box-open"></i></a>
+            </nav>
+        </header>
+        <main role="main"> 
+            <h1>Measure Spaces</h1>
+            <article>
+                <section class="header">
+                    Posted on 2024-07-07
+                        </section>
+                <section>
+                    <h1 id="sigma-algebra"><span
+                    class="math inline">\(\sigma\)</span>-algebra</h1>
+                    <div class="definition">
+                    <p><strong>Definition 1</strong>. <span
+                    class="math inline">\(\mathcal{A} \in
+                    \mathcal{P}(X)\)</span> is</p>
+                    <ul>
+                    <li><p>an <strong>algebra</strong> on <span
+                    class="math inline">\(X\)</span> if it is closed
+                    under finite union and complement.</p></li>
+                    <li><p>an <strong><span
+                    class="math inline">\(\sigma\)</span>-algebra</strong>
+                    on <span class="math inline">\(X\)</span> if it is
+                    closed under countable union and
+                    complement.</p></li>
+                    </ul>
+                    </div>
+                    <div class="remark">
+                    <p><em>Remark 1</em>. An algebra is a <span
+                    class="math inline">\(\sigma\)</span>-algebra if it
+                    is closed under disjoint countable union.</p>
+                    </div>
+                    <p>Consider a category of spaces given by</p>
+                    <ol>
+                    <li><p>Objects: <span class="math inline">\((X,
+                    \mathcal{E})\)</span> for <span
+                    class="math inline">\(\mathcal{E} \subseteq
+                    \mathcal{P}(X)\)</span>.</p></li>
+                    <li><p>Morphisms: <span class="math inline">\((X,
+                    \mathcal{E}) \xrightarrow{f} (Y,
+                    \mathcal{F})\)</span> s.t. <span
+                    class="math inline">\(A \in \mathcal{F}\)</span>
+                    implies <span class="math inline">\(f^{-1} A \in
+                    \mathcal{E}\)</span>.</p></li>
+                    </ol>
+                    <div class="definition">
+                    <p><strong>Definition 2</strong>. <span
+                    class="math inline">\((X, \mathcal{M})\)</span> is
+                    called a <strong>measure space</strong> if <span
+                    class="math inline">\(\mathcal{M}\)</span> is <span
+                    class="math inline">\(\sigma\)</span>-algebra, and
+                    morphisms between such spaces are called
+                    <strong>measurable functions</strong>. Sets in <span
+                    class="math inline">\(\mathcal{M}\)</span> is said
+                    to be <strong>measurable</strong>.</p>
+                    </div>
+                    <div class="definition">
+                    <p><strong>Definition 3</strong>. <span
+                    class="math inline">\(\mathfrak{M}(\mathcal{E})\)</span>
+                    is the terminal <span
+                    class="math inline">\(\sigma\)</span>-alg with a map
+                    <span class="math inline">\((X,
+                    \mathfrak{M}(\mathcal{E})) \to (X,
+                    \mathcal{E})\)</span>. In other words, it is the
+                    smallest <span
+                    class="math inline">\(\sigma\)</span>-alg containing
+                    <span
+                    class="math inline">\(\mathcal{E}\)</span>.</p>
+                    </div>
+                    <div class="definition">
+                    <p><strong>Definition 4</strong>. A <strong>Borel
+                    <span
+                    class="math inline">\(\sigma\)</span>-algebra</strong>
+                    is <span class="math inline">\(\mathcal{B}_X :=
+                    \mathfrak{M}(\mathcal{O})\)</span> for collections
+                    of open sets <span
+                    class="math inline">\(\mathcal{O}\)</span>.</p>
+                    </div>
+                    <p>If not mentioned otherwise, a topological space
+                    will be given a measure space structure by taking
+                    Borel <span
+                    class="math inline">\(\sigma\)</span>-algebra.</p>
+                    <div class="proposition">
+                    <p><strong>Proposition 1</strong>. <em>Category of
+                    measure spaces have arbitrary product, i.e., <span
+                    class="math inline">\(\prod_{\alpha \in J}
+                    X_\alpha\)</span> has a natural <span
+                    class="math inline">\(\sigma\)</span>-algebra <span
+                    class="math inline">\(\bigotimes_{\alpha \in J}
+                    \mathcal{M}_\alpha\)</span> with measurable
+                    projections <span class="math inline">\(\pi_\alpha :
+                    \prod X_\bullet \to X_\alpha\)</span> for <span
+                    class="math inline">\((X_\alpha,
+                    \mathcal{M}_\alpha)_{\alpha \in
+                    J}\)</span>.</em></p>
+                    </div>
+                    <div class="proof">
+                    <p><em>Proof.</em> Take <span
+                    class="math inline">\(\bigotimes_{\alpha \in J}
+                    \mathcal{M}_\alpha :=
+                        M(\bigcup_{\alpha \in J} \{\pi_{\alpha}^{-1} A
+                    \mid A \in \mathcal{M}_{\alpha}\})\)</span>, which
+                    is the smallest <span
+                    class="math inline">\(\sigma\)</span>-algebra with
+                    projections <span
+                    class="math inline">\(\pi_\alpha\)</span>. Then, the
+                    cone <span class="math inline">\(\{ (Y, \mathcal{N})
+                    \to (X_\alpha, \mathcal{M}_\alpha)
+                    \}_\alpha\)</span> factors through this space. ◻</p>
+                    </div>
+                    <div class="remark">
+                    <p><em>Remark 2</em>. If index set is countable,
+                    then <span class="math inline">\(\bigotimes
+                    \mathcal{M}_\bullet = \{ \prod E_\bullet | E_\alpha
+                    \in \mathcal{E}_\alpha \}\)</span>.</p>
+                    </div>
+                    <div class="remark">
+                    <p><em>Remark 3</em>. For metric spaces given Borel
+                    <span class="math inline">\(\sigma\)</span>-algebra,
+                    the projections <span class="math inline">\(\prod_I
+                    X_\bullet \to X_i\)</span> are measurable for finite
+                    <span class="math inline">\(I\)</span>, but <span
+                    class="math inline">\(\prod_I X_\bullet\)</span> is
+                    only <em>the</em> product if each <span
+                    class="math inline">\(X_i\)</span> has a countable
+                    dense subset.</p>
+                    </div>
+                    <h1 id="counts-and-measures">Counts and
+                    Measures</h1>
+                    <h2 id="counts">Counts</h2>
+                    <div class="definition">
+                    <p><strong>Definition 5</strong>. The set of
+                    <strong>count functions</strong>, <span
+                    class="math inline">\(\mathop{\mathrm{Cnt}}_{\mathcal{A}}(X)\)</span>,
+                    is the set of bounded measurable functions <span
+                    class="math inline">\(X \to \mathbb{N}\)</span>,
+                    where <span class="math inline">\(X\)</span> is
+                    given an algebra <span
+                    class="math inline">\(\mathcal{A}\)</span>.</p>
+                    </div>
+                    <div class="example">
+                    <p><strong>Example 1</strong>. An <strong>indicator
+                    function</strong> <span
+                    class="math inline">\(1_A\)</span> of a measurable
+                    set <span class="math inline">\(A\)</span> is a
+                    count function <span class="math display">\[1_A(x) =
+                    \begin{cases}
+                          1, &amp; x \in A \\
+                          0, &amp; \text{otherwise}
+                        \end{cases}\]</span></p>
+                    </div>
+                    <div class="proposition">
+                    <p><strong>Proposition 2</strong>. <em><span
+                    class="math inline">\(\mathop{\mathrm{Cnt}}_{\mathcal{A}}(X)\)</span>
+                    is closed under (finite) addition. Further, if <span
+                    class="math inline">\(\mathcal{A}\)</span> is a
+                    <span class="math inline">\(\sigma\)</span>-alg, it
+                    is closed under countable addition whenever
+                    bounded.</em></p>
+                    </div>
+                    <div class="proof">
+                    <p><em>Proof.</em> Consider <span
+                    class="math display">\[\left\{ \sum_{i \in I} f_i
+                    \leq M \right\}
+                        = \bigcup_{M = \sum_{i \in I} m_i} \bigcap_{i
+                    \in I} \{ f_i \leq m_i \}.\]</span> If <span
+                    class="math inline">\(I\)</span> is finite, the
+                    union and intersection are finite, while if <span
+                    class="math inline">\(I\)</span> is countable, both
+                    are countable. It follows that the finite sum is
+                    measurable for algebra, and countable sum is
+                    measurable for <span
+                    class="math inline">\(\sigma\)</span>-algebra. ◻</p>
+                    </div>
+                    <div class="remark">
+                    <p><em>Remark 4</em>. Indicator functions serve as a
+                    <span
+                    class="math inline">\(\mathbb{N}\)</span>-basis of
+                    <span
+                    class="math inline">\(\mathop{\mathrm{Cnt}}(X)\)</span>.</p>
+                    </div>
+                    <p>We give a partial order on <span
+                    class="math inline">\(\mathop{\mathrm{Cnt}}(X)\)</span>,
+                    where <span class="math inline">\(f \leq g\)</span>
+                    if <span class="math inline">\(f(x) \leq
+                    g(x)\)</span> on all <span class="math inline">\(x
+                    \in X\)</span>. Then, <span
+                    class="math inline">\(g-f \in
+                    \mathop{\mathrm{Cnt}}(X)\)</span> if and only if
+                    <span class="math inline">\(f \leq g\)</span>.</p>
+                    <div class="proposition">
+                    <p><strong>Proposition 3</strong>. <em>Suppose <span
+                    class="math inline">\(\mathcal{F}\)</span> is a set
+                    of bounded functions <span class="math inline">\(f:
+                    X \to \mathbb{N}\)</span>, closed under addition,
+                    and <span class="math inline">\(f - g \in
+                    \mathcal{F}\)</span> for <span
+                    class="math inline">\(f \geq g \in
+                    \mathcal{F}\)</span>. If <span
+                    class="math inline">\(f \in \mathcal{F}\)</span>
+                    implies <span class="math inline">\(1_{f = 0} \in
+                    \mathcal{F}\)</span>, such <span
+                    class="math inline">\(\mathcal{F}\)</span> uniquely
+                    determines algebra <span
+                    class="math inline">\(\mathcal{A}\)</span> such that
+                    <span class="math inline">\(\mathcal{F} =
+                    \mathop{\mathrm{Cnt}}_{\mathcal{A}}(X)\)</span>.
+                    Further, if <span
+                    class="math inline">\(\mathcal{F}\)</span> is closed
+                    under bounded countable addition, then <span
+                    class="math inline">\(\mathcal{A}\)</span> is a
+                    <span
+                    class="math inline">\(\sigma\)</span>-algebra.</em></p>
+                    </div>
+                    <div class="proof">
+                    <p><em>Proof.</em> Consider <span
+                    class="math inline">\(\mathcal{A} := \{ \{f &gt; 0\}
+                    \mid f \in \mathcal{F} \}\)</span>, which is an
+                    algebra:</p>
+                    <ul>
+                    <li><p>(Closed under union) <span
+                    class="math inline">\(\{f&gt;0\} \cup \{g&gt;0\} =
+                    \{f+g&gt;0\}\)</span>,</p></li>
+                    <li><p>(Closed under complement) <span
+                    class="math inline">\(\{ 1_{f=0} &gt; 0 \} = \{f
+                    &gt; 0\}^c\)</span>.</p></li>
+                    </ul>
+                    <p>Note that if <span class="math inline">\(E \in
+                    \mathcal{A}\)</span>, then <span
+                    class="math inline">\(E = \{f &gt; 0\}^c = \{f =
+                    0\}\)</span> for some <span class="math inline">\(f
+                    \in \mathcal{F}\)</span>, so <span
+                    class="math inline">\(1_E \in
+                    \mathcal{F}\)</span>.</p>
+                    <p>It suffices to show that <span
+                    class="math inline">\(\mathcal{F} =
+                    \mathop{\mathrm{Cnt}}_{\mathcal{A}}(X)\)</span>,
+                    since <span
+                    class="math inline">\(\mathop{\mathrm{Cnt}}_{\mathcal{A}}\)</span>
+                    determines <span
+                    class="math inline">\(\mathcal{A}\)</span> through
+                    indicator functions.</p>
+                    <ol>
+                    <li><p>Suppose <span class="math inline">\(g \in
+                    \mathop{\mathrm{Cnt}}_{\mathcal{A}}(X)\)</span>,
+                    then <span class="math inline">\(\{g \geq i\} \in
+                    \mathcal{A}\)</span> gives <span
+                    class="math inline">\(1_{g \geq i} \in
+                    \mathcal{F}\)</span>. Therefore, <span
+                    class="math inline">\(g = \sum_{i=1}^\infty 1_{g
+                    \geq i} \in \mathcal{F}\)</span>.</p></li>
+                    <li><p>Suppose <span class="math inline">\(g \in
+                    \mathcal{F}\)</span>. <span class="math inline">\(g
+                    \geq 1_{g &gt; 0} \in \mathcal{F}\)</span>, so <span
+                    class="math inline">\(g - 1_{g&gt;0} \in
+                    \mathcal{F}\)</span>. By induction on bounds, <span
+                    class="math inline">\(\{ g \geq i+1 \} = \{ (g -
+                    1_{g&gt;0}) \geq i \} \in \mathcal{A}\)</span> for
+                    each <span class="math inline">\(i \in
+                    \mathbb{N}\)</span>. As <span
+                    class="math inline">\(\{g \geq 0\} = X\)</span>,
+                    this shows that <span class="math inline">\(\{g \geq
+                    j\}\)</span> is measurable, so <span
+                    class="math inline">\(g\)</span> is <span
+                    class="math inline">\(\mathcal{A}\)</span>-measurable.</p></li>
+                    </ol>
+                    <p>Lastly, suppose <span
+                    class="math inline">\(\mathcal{F}\)</span> is closed
+                    under bounded countable addition as well. Then for
+                    disjoint sets <span class="math inline">\(A_i \in
+                    \mathcal{A}\)</span>, <span
+                    class="math inline">\(1_{\bigsqcup_i^\infty A_i} =
+                    \sum_i^\infty 1_{A_i} \in \mathcal{F}\)</span>, so
+                    <span class="math inline">\(\bigsqcup_i^\infty A_i
+                    \in \mathcal{A}\)</span>. Since <span
+                    class="math inline">\(\mathcal{A}\)</span> is
+                    established as an algebra, this shows that it is a
+                    <span
+                    class="math inline">\(\sigma\)</span>-algebra. ◻</p>
+                    </div>
+                    <h2 id="measures">Measures</h2>
+                    <div class="definition">
+                    <p><strong>Definition 6</strong>. Given a measure
+                    space <span class="math inline">\((X,
+                    \mathcal{M})\)</span>, a <strong>measure</strong> is
+                    a map <span class="math display">\[\mu :
+                    \mathop{\mathrm{Cnt}}_{\mathcal{M}}(X) \to [0,
+                    \infty]\]</span> which is <strong>countably
+                    additive</strong>, i.e., <span
+                    class="math inline">\(\mu(\sum_I f_\bullet) = \sum_I
+                    \mu(f_\bullet)\)</span> for at most countable <span
+                    class="math inline">\(I\)</span> whenever defined.
+                    Traditional measure can be recovered as <span
+                    class="math inline">\(\mu(A) :=
+                    \mu(1_A)\)</span>.</p>
+                    </div>
+                    <p>Note that <span class="math inline">\(\mu(f) =
+                    \sum_k k \cdot \mu(f^{-1}(k))\)</span>, so it is
+                    easy to see the equivalence of the definitions.</p>
+                    <p>A measure <span
+                    class="math inline">\(\mu\)</span> is trivially
+                    <strong>monotone</strong>, i.e., <span
+                    class="math inline">\(\mu(f) \leq \mu(g)\)</span> if
+                    <span class="math inline">\(f \leq g\)</span>.</p>
+                    <div class="proposition">
+                    <p><strong>Proposition 4</strong>. <em>A measure
+                    <span class="math inline">\(\mu\)</span> also has
+                    properties</em></p>
+                    <ol>
+                    <li><p><em><strong>(Continuity from above)</strong>
+                    If <span class="math inline">\(f_j \uparrow
+                    f_\infty\)</span>, <span
+                    class="math inline">\(\lim_{j \to \infty} \mu(f_j) =
+                    \mu(f_\infty)\)</span>.</em></p></li>
+                    <li><p><em><strong>(Continuity from below)</strong>
+                    If <span class="math inline">\(f_j \downarrow
+                    f_\infty\)</span> and <span
+                    class="math inline">\(\mu(f_1) &lt; \infty\)</span>,
+                    <span class="math inline">\(\lim_{j \to \infty}
+                    \mu(f_j) = \mu(f_\infty)\)</span>.</em></p></li>
+                    </ol>
+                    </div>
+                    <div class="proof">
+                    <p><em>Proof.</em> First one follows from countable
+                    addition of differences. The second is simply a
+                    modification of the first using <span
+                    class="math inline">\(g_j = f_1 - f_j\)</span>,
+                    where <span class="math inline">\(\mu(f_1) &lt;
+                    \infty\)</span> is required for the limit. ◻</p>
+                    </div>
+                    <p>Couple of basic terms to describe measures and
+                    its sets.</p>
+                    <div class="definition">
+                    <p><strong>Definition 7</strong> (Finiteness of a
+                    measure). A measure <span
+                    class="math inline">\(\mu\)</span> is</p>
+                    <ul>
+                    <li><p><strong>finite</strong> if <span
+                    class="math inline">\(\mu &lt;
+                    \infty\)</span>.</p></li>
+                    <li><p><strong><span
+                    class="math inline">\(\sigma\)</span>-finite</strong>
+                    if a countable cover <span
+                    class="math inline">\((E_i)\)</span> has <span
+                    class="math inline">\(\mu|_{E_i} &lt;
+                    \infty\)</span>.</p></li>
+                    <li><p><strong>semi-finite</strong> if every msb set
+                    has a subset of measure <span
+                    class="math inline">\((0, \infty)\)</span>.</p></li>
+                    </ul>
+                    </div>
+                    <div class="definition">
+                    <p><strong>Definition 8</strong>. <span
+                    class="math inline">\(E\)</span> is <strong>(<span
+                    class="math inline">\(\mu\)</span>-)null
+                    set</strong> if <span class="math inline">\(\mu(E) =
+                    0\)</span>.</p>
+                    </div>
+                    <div class="definition">
+                    <p><strong>Definition 9</strong>. <span
+                    class="math inline">\(P(x)\)</span> holds
+                    <strong>(<span
+                    class="math inline">\(\mu\)</span>-)almost
+                    everywhere</strong> if <span
+                    class="math inline">\(\mu\{ x \mid \neg P(x) \} =
+                    0\)</span>.</p>
+                    </div>
+                    <div class="remark">
+                    <p><em>Remark 5</em>. This gives an alternative
+                    notion of equality on <span
+                    class="math inline">\(\hom(X, Y)\)</span>: That is,
+                    <span class="math inline">\(f\)</span> and <span
+                    class="math inline">\(g\)</span> is "roughly equal"
+                    if <span class="math inline">\(f = g\)</span> almost
+                    everywhere.</p>
+                    </div>
+                    <h1 id="constructions-of-a-measure">Constructions of
+                    a measure</h1>
+                    <p>Usually a measure is constructed as an extension.
+                    Given a map <span class="math inline">\(\mu :
+                    \mathop{\mathrm{Cnt}}_{\mathcal{A}}(X) \to [0,
+                    \infty]\)</span> with properties, an
+                    <strong>extension</strong> of it on <span
+                    class="math inline">\(\mathcal{M}\)</span> is a map
+                    (measure) <span class="math inline">\(\bar{\mu} :
+                    \mathop{\mathrm{Cnt}}_{\mathcal{M}}(X) \to [0,
+                    \infty]\)</span> such that <span
+                    class="math inline">\(\bar{\mu}|_{\mathop{\mathrm{Cnt}}_{\mathcal{A}}(X)}
+                    = \mu\)</span>.</p>
+                    <h2 id="completion">Completion</h2>
+                    <div class="definition">
+                    <p><strong>Definition 10</strong>. <span
+                    class="math inline">\(\mu\)</span> is
+                    <strong>complete</strong> if any subset of <span
+                    class="math inline">\(\mu\)</span>-null set is
+                    measurable.</p>
+                    </div>
+                    <div class="proposition">
+                    <p><strong>Proposition 5</strong>. <em>Consider a
+                    measure space <span class="math inline">\((X,
+                    \mathcal{M}, \mu)\)</span>. Then, <span
+                    class="math display">\[\bar{\mathcal{M}} :=
+                        \left\{ F \in \mathcal{P}(X) \mid E \subset F
+                    \subset E&#39; \text{ for } E, E&#39; \in
+                    \mathcal{M}, \mu(E&#39; \setminus E) = 0
+                    \right\}\]</span> is a <span
+                    class="math inline">\(\sigma\)</span>-algebra, and
+                    <span class="math inline">\(\mu\)</span> has a
+                    unique extension <span
+                    class="math inline">\(\bar{\mu}\)</span> on <span
+                    class="math inline">\(\bar{\mathcal{M}}\)</span>
+                    such that <span
+                    class="math inline">\(\bar{\mu}\)</span> is
+                    complete.</em></p>
+                    </div>
+                    <div class="proof">
+                    <p><em>Proof.</em> Both countable and finite union
+                    preserves the condition of <span
+                    class="math inline">\(\bar{\mathcal{M}}\)</span>,
+                    since countable union of <span
+                    class="math inline">\(\mu\)</span>-null set is <span
+                    class="math inline">\(\mu\)</span>-null. Complement
+                    also preserves <span
+                    class="math inline">\(\mathcal{M}\)</span>, since
+                    <span class="math inline">\(E^c \setminus E&#39;^c =
+                    E&#39; \setminus E\)</span>. Hence, <span
+                    class="math inline">\(\bar{\mathcal{M}}\)</span> is
+                    a <span
+                    class="math inline">\(\sigma\)</span>-algebra.</p>
+                    <p>Now, being a complete extension mandates <span
+                    class="math inline">\(\bar{\mu}(F) = \mu(E)\)</span>
+                    for <span class="math inline">\(E \subset F \subset
+                    E&#39;\)</span> in the condition of <span
+                    class="math inline">\(\mathcal{M}\)</span>. This
+                    gives well-defined measure on <span
+                    class="math inline">\(\mathcal{M}\)</span>, since
+                    <span class="math inline">\(\mu(E)\)</span> is
+                    determined by <span
+                    class="math inline">\(F\)</span>. ◻</p>
+                    </div>
+                    <div class="definition">
+                    <p><strong>Definition 11</strong>. The measure <span
+                    class="math inline">\(\bar{\mu}\)</span> is called
+                    the <strong>completion</strong> of <span
+                    class="math inline">\(\mu\)</span>.</p>
+                    </div>
+                    <h2 id="premeasure-extension">Premeasure
+                    extension</h2>
+                    <div class="definition">
+                    <p><strong>Definition 12</strong>. For an algebra
+                    <span class="math inline">\(\mathcal{A}\)</span>, a
+                    <strong>premeasure</strong> on it is <span
+                    class="math display">\[\mu_0 :
+                    \mathop{\mathrm{Cnt}}_{\mathcal{A}}(X) \to
+                    \mathbb{R}\]</span> that satisfies precountable
+                    additivity: if <span class="math inline">\(\sum_I
+                    f_\bullet \in
+                    \mathop{\mathrm{Cnt}}_{\mathcal{A}}\)</span>, <span
+                    class="math display">\[\mu_0 \left( \sum_I f_\bullet
+                    \right) = \sum_I \mu_0(f_\bullet).\]</span></p>
+                    </div>
+                    <div class="definition">
+                    <p><strong>Definition 13</strong>. <span
+                    class="math inline">\(\mu^* : \operatorname{Mor}(X,
+                    \mathbb{N}) \to [0, \infty]\)</span> is an
+                    <strong>outer measure</strong> if it is monotone and
+                    countably subadditive.</p>
+                    </div>
+                    <div class="theorem">
+                    <p><strong>Theorem 6</strong>. <em>For <span
+                    class="math inline">\(\mathcal{M} =
+                    \mathfrak{M}(\mathcal{A})\)</span> and a <span
+                    class="math inline">\(\sigma\)</span>-finite
+                    premeasure <span
+                    class="math inline">\(\mu_0\)</span> on <span
+                    class="math inline">\(\mathcal{A}\)</span>, one has
+                    the unique extension measure <span
+                    class="math inline">\(\mu\)</span> on <span
+                    class="math inline">\(\mathcal{M}\)</span>.</em></p>
+                    </div>
+                    <h2 id="lebesgue-measure">Lebesgue Measure</h2>
+
+                    <h1 id="integration">Integration</h1>
+                    <h2 id="nonnegative-integration">Nonnegative
+                    Integration</h2>
+                    <p>Fix a measure space <span
+                    class="math inline">\((X, \mathcal{M})\)</span>, and
+                    a measure <span class="math inline">\(\mu :
+                    \mathcal{F} \to [0, \infty]\)</span>. We may
+                    consider <span
+                    class="math display">\[\begin{array}{cccc}
+                        \tilde{\mu}: &amp; [0, \infty]
+                    \otimes_\mathbb{N}\mathcal{F} &amp; \rightarrow
+                    &amp; [0, \infty] \\
+                        &amp; r \otimes f &amp; \mapsto &amp; r \cdot
+                    \mu(f) \\
+                      \end{array}\]</span> which we may denote <span
+                    class="math inline">\(\int d\mu\)</span> instead, or
+                    <span class="math inline">\(\int f :=
+                    \tilde{\mu}(f)\)</span> if the measure is
+                    obvious.</p>
+                    <div class="remark">
+                    <p><em>Remark 6</em>. <span
+                    class="math inline">\(\tilde{\mu}\)</span> is
+                    linear, i.e., <span class="math inline">\(\int (f +
+                    g) = \int f + \int g\)</span> and <span
+                    class="math inline">\(\int cf = c \int f\)</span>.
+                    It also retains the continuity from below.</p>
+                    </div>
+                    <div class="remark">
+                    <p><em>Remark 7</em>. There is the natural injection
+                    <span class="math inline">\([0, \infty]
+                    \otimes_\mathbb{N}\mathcal{F} \hookrightarrow
+                    \hom(X, [0, \infty])\)</span>. A function in its
+                    image is called a <strong>simple function</strong>,
+                    which is a linear combination of index
+                    functions.</p>
+                    </div>
+                    <div class="theorem">
+                    <p><strong>Theorem 7</strong>. <em><span
+                    class="math inline">\(\tilde{\mu}\)</span> extends
+                    naturally to countably additive <span
+                    class="math display">\[\int d \mu : \hom(X, [0,
+                    \infty]) \to [0, \infty].\]</span></em></p>
+                    </div>
+                    <div class="proof">
+                    <p><em>Proof.</em> </p>
+                    <p><strong>Step 1: Uniqueness of possible
+                    extension</strong></p>
+                    <p>It suffices to show <span class="math inline">\(f
+                    \in \hom(X, [0, \infty])\)</span> is a countable sum
+                    of <span
+                    class="math inline">\(\mathbb{R}\)</span>-multiple
+                    of indicator functions, since countable additivity
+                    determines <span class="math inline">\(\int f
+                    d\mu\)</span>.</p>
+                    <p>We may assume <span class="math inline">\(f &lt;
+                    \infty\)</span>, since <span class="math inline">\(f
+                    = \infty \cdot 1_{f = \infty} + f \cdot 1_{f \neq
+                    \infty}\)</span>. For <span class="math inline">\(n
+                    \in \mathbb{Z}\)</span>, consider the <span
+                    class="math inline">\(n\)</span>-th digit <span
+                    class="math display">\[digit_n(y) = \left[
+                    \frac{y}{2^n} \right] - 2 \left[ \frac{y}{2^{n+1}}
+                    \right] \in \{0, 1\}.\]</span> Then, <span
+                    class="math inline">\(y = \sum_{n \in \mathbb{Z}}
+                    digit_n(y) \cdot 2^n\)</span>, and <span
+                    class="math inline">\(digit_n\)</span> is clearly
+                    measurable. Hence, <span class="math inline">\(f =
+                    \sum_{n \in \mathbb{Z}} 2^n \cdot 1_{d_n \circ f =
+                    1}\)</span>.</p>
+                    <p></p>
+                    <p><strong>Step 2: Well-definedness as countable sum
+                    of simple functions</strong></p>
+                    <p>Considering partial sums, it is enough to show
+                    that for simple functions <span
+                    class="math inline">\(\varphi_i \uparrow f\)</span>,
+                    <span class="math inline">\(\lim_{i \to \infty} \int
+                    \varphi_i\)</span> is independent of choice of <span
+                    class="math inline">\((\varphi_i)\)</span>.</p>
+                    <p>Fix <span class="math inline">\(\psi \leq
+                    f\)</span> and <span class="math inline">\(\alpha
+                    \in (0, 1)\)</span>. Let <span
+                    class="math inline">\(E_i := \{ \varphi_i \geq
+                    \alpha f \}\)</span>. Note that <span
+                    class="math inline">\(1_{E_i} \uparrow 1_X\)</span>:
+                    for each <span class="math inline">\(x \in
+                    X\)</span>, <span class="math inline">\(\varphi_i(x)
+                    \geq \alpha f(x)\)</span> for some <span
+                    class="math inline">\(i\)</span>. As <span
+                    class="math inline">\(\int \varphi_i \geq \alpha
+                    \int 1_{E_i} \psi\)</span>, taking limit, <span
+                    class="math inline">\(\lim_i \int \varphi_i \geq
+                    \alpha \int \psi\)</span> by continuity from below.
+                    Taking supremum of RHS gives the result.</p>
+                    <p></p>
+                    <p><strong>Step 3: Countable additivity in
+                    general</strong></p>
+                    <p>Countable additivity can be shown by decomposing
+                    into simple functions, and invoking previous step.
+                    That is, for <span class="math inline">\(f = \sum_{i
+                    \in I} f_i\)</span>, choose <span
+                    class="math inline">\(f_i = \sum_{j \in J_i}
+                    \varphi_{ij}\)</span>. Since the sum <span
+                    class="math inline">\(f = \sum_{i \in I, j \in J_j}
+                    \varphi_{ij}\)</span> is countable, one has <span
+                    class="math display">\[\sum_{i \in I} \int f_i =
+                    \sum_{i \in I, j \in J_j} \int \varphi_{ij} = \int
+                    f,\]</span> as desired.</p>
+                    <p> ◻</p>
+                    </div>
+                    <p>Countable additivity gives the following as a
+                    direct corollary.</p>
+                    <div class="corollary">
+                    <p><strong>Corollary 8</strong> (Monotone
+                    Convergence Theorem). <em>If <span
+                    class="math inline">\(f_n \uparrow f\)</span> for
+                    measurable functions, one has <span
+                    class="math inline">\(\int f_n \to \int f\)</span>
+                    as <span class="math inline">\(n \to
+                    \infty\)</span>.</em></p>
+                    </div>
+                    <h2 id="real-and-complex-integration">Real and
+                    Complex Integration</h2>
+                    <p>While the above works well for nonnegative
+                    functions, many functions in general maps to <span
+                    class="math inline">\(\mathbb{R}\)</span> or <span
+                    class="math inline">\(\mathbb{C}\)</span>. We will
+                    extend integration onto these, at loss of
+                    integrability.</p>
+                    <div class="proposition">
+                    <p><strong>Proposition 9</strong>. <em>For <span
+                    class="math inline">\(f \in \hom(X,
+                    \mathbb{R})\)</span>,</em></p>
+                    </div>
+                    <h1 id="product-measure">Product Measure</h1>
+                    <h1 id="signed-measure">Signed Measure</h1>
+                </section>
+            </article>        </main>
+        <footer>
+            <nav>
+                <a href=".."><i class="fa-solid fa-house"></i></a>
+                <a href="../about.html"><i class="fa-solid fa-circle-question"></i></a>
+                <a href="../archive.html"><i class="fa-solid fa-box-open"></i></a>
+            </nav>
+        </footer>
+    </body>
+</html>
