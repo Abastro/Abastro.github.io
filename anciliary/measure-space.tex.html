@@ -27,11 +27,20 @@
             <h1>Measure Spaces</h1>
             <article>
                 <section class="header">
-                    Posted on 2024-07-07
+                    Posted on 2024-07-10
+                                by Abs
                         </section>
                 <section>
+                    <p>Clearly, there is a need to integrate a function,
+                    or measure a domain (a set). Measure theory gives a
+                    mathematical framework for such operations.</p>
                     <h1 id="sigma-algebra"><span
                     class="math inline">\(\sigma\)</span>-algebra</h1>
+                    <p>It turns out, perhaps unsurprisingly, that not
+                    every space can be measured, and not every function
+                    can be integrated. <span
+                    class="math inline">\(\sigma\)</span>-algebra of
+                    measure spaces encapsulates this concept.</p>
                     <div class="definition">
                     <p><strong>Definition 1</strong>. <span
                     class="math inline">\(\mathcal{A} \in
@@ -152,13 +161,17 @@
                     <h2 id="counts">Counts</h2>
                     <div class="definition">
                     <p><strong>Definition 5</strong>. The set of
-                    <strong>count functions</strong>, <span
+                    <strong>count functions</strong> or
+                    <strong>counts</strong>, <span
                     class="math inline">\(\mathop{\mathrm{Cnt}}_{\mathcal{A}}(X)\)</span>,
                     is the set of bounded measurable functions <span
                     class="math inline">\(X \to \mathbb{N}\)</span>,
                     where <span class="math inline">\(X\)</span> is
                     given an algebra <span
-                    class="math inline">\(\mathcal{A}\)</span>.</p>
+                    class="math inline">\(\mathcal{A}\)</span>. We may
+                    omit <span class="math inline">\(X\)</span> or <span
+                    class="math inline">\(\mathcal{A}\)</span> if either
+                    is obvious from context.</p>
                     </div>
                     <div class="example">
                     <p><strong>Example 1</strong>. An <strong>indicator
@@ -170,6 +183,17 @@
                           1, &amp; x \in A \\
                           0, &amp; \text{otherwise}
                         \end{cases}\]</span></p>
+                    </div>
+                    <div class="remark">
+                    <p><em>Remark 4</em>. Alternatively, we may regard a
+                    count as a <em>formal sum</em> of measurable sets.
+                    That is, <span
+                    class="math inline">\(\mathop{\mathrm{Cnt}}_{\mathcal{A}}(X)
+                    = \bigoplus_{E \in \mathcal{A}} \mathbb{Z}\langle
+                    [E] \rangle\)</span>, where each <span
+                    class="math inline">\([E]\)</span> correlates to the
+                    index function <span
+                    class="math inline">\(1_E\)</span> below.</p>
                     </div>
                     <div class="proposition">
                     <p><strong>Proposition 2</strong>. <em><span
@@ -195,7 +219,7 @@
                     class="math inline">\(\sigma\)</span>-algebra. ◻</p>
                     </div>
                     <div class="remark">
-                    <p><em>Remark 4</em>. Indicator functions serve as a
+                    <p><em>Remark 5</em>. Indicator functions serve as a
                     <span
                     class="math inline">\(\mathbb{N}\)</span>-basis of
                     <span
@@ -211,13 +235,13 @@
                     \mathop{\mathrm{Cnt}}(X)\)</span> if and only if
                     <span class="math inline">\(f \leq g\)</span>.</p>
                     <div class="proposition">
-                    <p><strong>Proposition 3</strong>. <em>Suppose <span
-                    class="math inline">\(\mathcal{F}\)</span> is a set
-                    of bounded functions <span class="math inline">\(f:
-                    X \to \mathbb{N}\)</span>, closed under addition,
-                    and <span class="math inline">\(f - g \in
-                    \mathcal{F}\)</span> for <span
-                    class="math inline">\(f \geq g \in
+                    <p><strong>Proposition 3</strong>. <em> Suppose
+                    <span class="math inline">\(\mathcal{F}\)</span> is
+                    a set of bounded functions <span
+                    class="math inline">\(f: X \to \mathbb{N}\)</span>,
+                    closed under addition, and <span
+                    class="math inline">\(f - g \in \mathcal{F}\)</span>
+                    for <span class="math inline">\(f \geq g \in
                     \mathcal{F}\)</span>. If <span
                     class="math inline">\(f \in \mathcal{F}\)</span>
                     implies <span class="math inline">\(1_{f = 0} \in
@@ -301,6 +325,9 @@
                     class="math inline">\(\sigma\)</span>-algebra. ◻</p>
                     </div>
                     <h2 id="measures">Measures</h2>
+                    <p>Measures let us assign “area" onto the space
+                    consistently, so that we can “sum up" the count
+                    functions.</p>
                     <div class="definition">
                     <p><strong>Definition 6</strong>. Given a measure
                     space <span class="math inline">\((X,
@@ -388,10 +415,11 @@
                     0\)</span>.</p>
                     </div>
                     <div class="remark">
-                    <p><em>Remark 5</em>. This gives an alternative
+                    <p><em>Remark 6</em>. This gives an alternative
                     notion of equality on <span
-                    class="math inline">\(\hom(X, Y)\)</span>: That is,
-                    <span class="math inline">\(f\)</span> and <span
+                    class="math inline">\(\mathop{\mathrm{Hom}}(X,
+                    Y)\)</span>: That is, <span
+                    class="math inline">\(f\)</span> and <span
                     class="math inline">\(g\)</span> is "roughly equal"
                     if <span class="math inline">\(f = g\)</span> almost
                     everywhere.</p>
@@ -468,6 +496,9 @@
                     </div>
                     <h2 id="premeasure-extension">Premeasure
                     extension</h2>
+                    <p>Often, measures are difficult to construct
+                    directly, so it is defined through a weaker
+                    construct called <em>premeasure</em>.</p>
                     <div class="definition">
                     <p><strong>Definition 12</strong>. For an algebra
                     <span class="math inline">\(\mathcal{A}\)</span>, a
@@ -477,19 +508,24 @@
                     \mathbb{R}\]</span> that satisfies precountable
                     additivity: if <span class="math inline">\(\sum_I
                     f_\bullet \in
-                    \mathop{\mathrm{Cnt}}_{\mathcal{A}}\)</span>, <span
-                    class="math display">\[\mu_0 \left( \sum_I f_\bullet
-                    \right) = \sum_I \mu_0(f_\bullet).\]</span></p>
+                    \mathop{\mathrm{Cnt}}_{\mathcal{A}}(X)\)</span>,
+                    <span class="math display">\[\mu_0 \left( \sum_I
+                    f_\bullet \right) = \sum_I
+                    \mu_0(f_\bullet).\]</span></p>
                     </div>
                     <div class="definition">
-                    <p><strong>Definition 13</strong>. <span
-                    class="math inline">\(\mu^* : \operatorname{Mor}(X,
-                    \mathbb{N}) \to [0, \infty]\)</span> is an
-                    <strong>outer measure</strong> if it is monotone and
-                    countably subadditive.</p>
+                    <p><strong>Definition 13</strong>. Consider set of
+                    bounded measurable maps <span
+                    class="math inline">\(\tilde{\mathop{\mathrm{Mor}}}(X,
+                    \mathbb{N})\)</span>. <span
+                    class="math inline">\(\mu^* :
+                    \tilde{\mathop{\mathrm{Mor}}}(X, \mathbb{N}) \to [0,
+                    \infty]\)</span> is an <strong>outer
+                    measure</strong> if it is monotone and countably
+                    subadditive.</p>
                     </div>
                     <div class="theorem">
-                    <p><strong>Theorem 6</strong>. <em>For <span
+                    <p><strong>Theorem 6</strong>. <em> For <span
                     class="math inline">\(\mathcal{M} =
                     \mathfrak{M}(\mathcal{A})\)</span> and a <span
                     class="math inline">\(\sigma\)</span>-finite
@@ -500,8 +536,316 @@
                     class="math inline">\(\mu\)</span> on <span
                     class="math inline">\(\mathcal{M}\)</span>.</em></p>
                     </div>
+                    <div class="proof">
+                    <p><em>Proof.</em> We may assume <span
+                    class="math inline">\(\mu_0\)</span> is finite.
+                    Indeed, in the <span
+                    class="math inline">\(\sigma\)</span>-finite case,
+                    we have <span class="math inline">\(\{ X_j \}_{j \in
+                    J}\)</span> where <span class="math inline">\(\mu_0
+                    (1_{X_j}) &lt; \infty\)</span>, with which we may
+                    extend <span
+                    class="math inline">\(\mu_0|_{X_j}\)</span>
+                    individually and sum back up onto <span
+                    class="math inline">\(X\)</span>.</p>
+                    <p></p>
+                    <p><strong>Step 1: Outer measure</strong></p>
+                    <p>One has an associated outer measure by
+                    approximation from above: <span
+                    class="math display">\[\mu^*(f) := \inf \left\{
+                    \sum_I \mu_0(g_\bullet)
+                          \,\middle|\, f \leq \sum_I g_\bullet,\ g_i \in
+                    \mathop{\mathrm{Cnt}}_{\mathcal{A}}(X)
+                    \right\}\]</span> On <span
+                    class="math inline">\(\mathcal{A}\)</span>, <span
+                    class="math inline">\(\mu^* \leq \mu_0\)</span> is
+                    obvious. For <span class="math inline">\(f \in
+                    \mathop{\mathrm{Cnt}}_{\mathcal{A}}(X)\)</span>,
+                    consider <span class="math inline">\(\sum_I
+                    g_\bullet \geq f\)</span>. Then, taking infimum on
+                    <span class="math inline">\(\sum_I \mu_0(g_\bullet)
+                    \geq \mu_0(f)\)</span> gives <span
+                    class="math inline">\(\mu^* \geq \mu_0\)</span>,
+                    showing <span class="math inline">\(\mu^* =
+                    \mu_0\)</span> on <span
+                    class="math inline">\(\mathcal{A}\)</span>. Notice
+                    this logic also works for general extension measure
+                    <span class="math inline">\(\nu\)</span> on <span
+                    class="math inline">\(\mathcal{M}\)</span> to prove
+                    <span class="math inline">\(\nu \leq \mu^*\)</span>,
+                    which will be of use later.</p>
+                    <p></p>
+                    <p><strong>Step 2: <span
+                    class="math inline">\(\mu^*\)</span>-Measurable
+                    sets</strong></p>
+                    <p>Consider <span class="math inline">\(d(f, g) :=
+                    \mu^* |f - g|\)</span>, which is a pseudometric,
+                    i.e., it satisfies the triangle inequality. This is
+                    well-defined by finiteness, and gives a topological
+                    structure on <span
+                    class="math inline">\(\mathop{\mathrm{Mor}}(X,
+                    \mathbb{N})\)</span>. Notice that if <span
+                    class="math inline">\(f_n \uparrow f\)</span>
+                    pointwise, <span class="math inline">\(f_n \to
+                    f\)</span> in this topology as well, as <span
+                    class="math inline">\(\mu^* f_n \uparrow \mu^*
+                    f\)</span> gives <span class="math inline">\(\mu^*
+                    (f - f_n) \downarrow 0\)</span>.</p>
+                    <p></p>
+                    <p><u>Claim:</u> The sequential closure <span
+                    class="math inline">\(\mathcal{F} =
+                    \overline{\mathop{\mathrm{Cnt}}_{\mathcal{A}}(X)}\)</span>
+                    is <span
+                    class="math inline">\(\mathop{\mathrm{Cnt}}_{\mathcal{\bar{A}}}(X)\)</span>
+                    for some <span
+                    class="math inline">\(\sigma\)</span>-algebra <span
+                    class="math inline">\(\mathcal{\bar{A}}\)</span>.</p>
+                    <p>By Proposition <span
+                    class="math inline">\(\ref{count-recover-algebra}\)</span>,
+                    it is enough to check the following.</p>
+                    <ul>
+                    <li><p>(Closed under addition/subtraction) Given by
+                    elementwise addition/subtraction of the
+                    sequences.</p></li>
+                    <li><p>(Closed under bounded countable sum) <span
+                    class="math inline">\(\sum_n f_n = f\)</span>
+                    implies that partial sum converges to <span
+                    class="math inline">\(f\)</span>. Since each partial
+                    sum is in <span
+                    class="math inline">\(\mathcal{F}\)</span> and <span
+                    class="math inline">\(\mathcal{F}\)</span> is
+                    closed, <span class="math inline">\(f \in
+                    \mathcal{F}\)</span>.</p></li>
+                    <li><p>(Contains index functions) For <span
+                    class="math inline">\(f \in \mathcal{F}\)</span>,
+                    <span class="math inline">\(1_{f=0} \in
+                    \mathcal{F}\)</span> since <span
+                    class="math inline">\(g \mapsto 1_{g=0}\)</span> is
+                    Lipschitz.</p></li>
+                    </ul>
+                    <p></p>
+                    <p><strong>Step 3: The induced measure and its
+                    uniqueness</strong></p>
+                    <p>Notice that any extension measure <span
+                    class="math inline">\(\nu\)</span> on <span
+                    class="math inline">\(\mathcal{\bar{A}}\)</span> is
+                    Lipschitz-continuous under the pseudometric: <span
+                    class="math display">\[|\nu f - \nu g| \leq \nu |f -
+                    g| \leq \mu^* |f - g|.\ (\because \nu \leq
+                    \mu^*)\]</span> Also, <span
+                    class="math inline">\(\mu^*\)</span> itself is
+                    Lipschitz-continuous. As any function in <span
+                    class="math inline">\(\mathcal{F} =
+                    \mathop{\mathrm{Cnt}}_{\mathcal{\bar{A}}}(X)\)</span>
+                    is a limit of counts <span
+                    class="math inline">\(f_n\)</span> on <span
+                    class="math inline">\(\mathcal{A}\)</span>, and
+                    <span class="math inline">\(\nu\)</span> agrees with
+                    <span class="math inline">\(\mu^*\)</span> on <span
+                    class="math inline">\(\mathcal{A}\)</span>, this
+                    shows that <span class="math inline">\(\nu =
+                    \mu^*|_{\mathcal{F}}\)</span>, i.e., the
+                    uniqueness.</p>
+                    <p>It remains to show that the restriction <span
+                    class="math inline">\(\mu :=
+                    \mu^*|_{\mathcal{F}}\)</span> is indeed a measure.
+                    Note that additivity extends via continuity from
+                    <span
+                    class="math inline">\(\mathop{\mathrm{Cnt}}_{\mathcal{A}}(X)\)</span>,
+                    and continuity from below is also shown as for <span
+                    class="math inline">\(f_n \uparrow f\)</span>, <span
+                    class="math inline">\(\mu f_n \to \mu f\)</span> by
+                    continuity. Therefore, <span
+                    class="math inline">\(\mu\)</span> is indeed a
+                    measure on <span
+                    class="math inline">\(\mathcal{\bar{A}} \supset
+                    \mathcal{M}\)</span>.</p>
+                    <p> ◻</p>
+                    </div>
+                    <div class="remark">
+                    <p><em>Remark 7</em>. Notice in the above proof,
+                    <span class="math inline">\(\mu\)</span> is complete
+                    with respect to <span
+                    class="math inline">\(\mathcal{\bar{A}}\)</span>.
+                    Indeed, if <span class="math inline">\(F \subset
+                    E\)</span> with <span class="math inline">\(\mu(1_E)
+                    = 0\)</span>, one has <span
+                    class="math inline">\(\mu^*(1_F) = 0\)</span>, so
+                    <span class="math inline">\(1_F\)</span> is
+                    contained in the closure, near <span
+                    class="math inline">\(0 \in \mathcal{F}\)</span>.
+                    Hence, Theorem <span
+                    class="math inline">\(\ref{premeasure-induced-measure}\)</span>
+                    also defines the complete extension measure.</p>
+                    </div>
                     <h2 id="lebesgue-measure">Lebesgue Measure</h2>
-
+                    <p>Now, we give usual measure for <span
+                    class="math inline">\(\mathbb{R}\)</span>. We will
+                    construct a measure on <span
+                    class="math inline">\((-\infty, \infty]\)</span>,
+                    and restrict it to <span
+                    class="math inline">\(\mathbb{R}\)</span>.</p>
+                    <div class="definition">
+                    <p><strong>Definition 14</strong>. <span
+                    class="math inline">\(\emptyset\)</span>, and <span
+                    class="math inline">\((a, b]\)</span> for <span
+                    class="math inline">\(a &lt; b\)</span> are called
+                    <strong>h-intervals</strong>.</p>
+                    </div>
+                    <p>Such intervals form an elementary family, i.e.,
+                    it contains the empty set, it is closed under
+                    intersection, and each complement is a finite union
+                    of such intervals. This defines an algebra <span
+                    class="math inline">\(\mathcal{A} := \{ \bigsqcup_{i
+                    \leq n} I_i \mid I_i \text{ is an
+                    h-interval}\}\)</span>, and <span
+                    class="math inline">\(\mathfrak{M}(\mathcal{A}) =
+                    \mathcal{B}_{(-\infty, \infty]}\)</span>.</p>
+                    <p>Fix an increasing function <span
+                    class="math inline">\(F : (-\infty, \infty] \to
+                    (-\infty, \infty]\)</span> which is
+                    right-continuous.</p>
+                    <div class="proposition">
+                    <p><strong>Proposition 7</strong>. <em> There is a
+                    unique premeasure <span class="math inline">\(\mu_0
+                    : \mathop{\mathrm{Cnt}}_{\mathcal{A}}(-\infty,
+                    \infty] \to [0, \infty]\)</span> satisfying <span
+                    class="math inline">\(\mu_0(1_I) = F(\sup I) -
+                    F(\inf I)\)</span> for each h-interval <span
+                    class="math inline">\(I\)</span>.</em></p>
+                    </div>
+                    <div class="proof">
+                    <p><em>Proof.</em> <span
+                    class="math inline">\(1_I\)</span>’s span <span
+                    class="math inline">\(\mathop{\mathrm{Cnt}}_{\mathcal{A}}(\mathbb{R})\)</span>,
+                    so it is enough to show the well-definedness, for
+                    which we only need to track the relations of
+                    generators <span class="math inline">\(\{ 1_I
+                    \}\)</span>. Such relations are generated by <span
+                    class="math display">\[\sum_{j \in J} 1_{I_j} =
+                    1_{I_0}\]</span> for countable <span
+                    class="math inline">\(J\)</span>, so enough to show
+                    that <span class="math inline">\(\mu_0\)</span>
+                    respects this relation.</p>
+                    <p>Consider upper boundaries <span
+                    class="math inline">\(S = \{ \sup I_j \mid j \in J
+                    \}\)</span>. Notice each element of <span
+                    class="math inline">\(S\)</span> has its associated
+                    interval. </p>
+                    <p><u>Claim:</u> <span
+                    class="math inline">\(S\)</span> with reversed order
+                    is well-ordered, so there is a order-reversing
+                    bijection <span class="math inline">\(s : \omega \to
+                    S\)</span> from an ordinal <span
+                    class="math inline">\(\omega\)</span>.</p>
+                    <p>For <span class="math inline">\(T \subset
+                    S\)</span>, <span class="math inline">\(\sup T \leq
+                    \sup S = \sup I_0\)</span>, so <span
+                    class="math inline">\(\sup T \in I_0\)</span>.
+                    Consider the unique interval <span
+                    class="math inline">\(I_{j_0 \in J}\)</span>
+                    containing <span class="math inline">\(\sup
+                    T\)</span>. One has <span
+                    class="math inline">\(\epsilon &gt; 0\)</span> such
+                    that <span class="math inline">\((\sup T - \epsilon,
+                    \sup T] \in I_{j_0}\)</span>, so there is <span
+                    class="math inline">\(t \in I_{j_0} \cap T\)</span>.
+                    Since <span class="math inline">\(I_{j_0}\)</span>
+                    should be an associated interval of <span
+                    class="math inline">\(t\)</span>, <span
+                    class="math inline">\(\sup T = t = \max T\)</span> -
+                    this proves the claim.</p>
+                    <p>Denote <span class="math inline">\(s_\gamma =
+                    s(\gamma)\)</span> for <span
+                    class="math inline">\(\gamma \in \omega\)</span>,
+                    and let <span class="math inline">\(s_\omega = \inf
+                    I_0\)</span>. Note that for <span
+                    class="math inline">\(\gamma \in \omega\)</span>,
+                    the associated interval of <span
+                    class="math inline">\(s_\gamma\)</span> is <span
+                    class="math inline">\((s_{\gamma+1},
+                    s_\gamma]\)</span>. Indeed, <span
+                    class="math inline">\(s_{\gamma+1}\)</span> is
+                    associated with the adjacent interval, whose <span
+                    class="math inline">\(\sup\)</span> is <span
+                    class="math inline">\(\inf\)</span> of associated
+                    interval of <span
+                    class="math inline">\(s_\gamma\)</span>.</p>
+                    <p>It suffices to show the following claim, as it
+                    applies for <span class="math inline">\(\beta = 0,
+                    \alpha = \omega\)</span>: </p>
+                    <p><u>Claim:</u> For <span
+                    class="math inline">\(\beta &lt; \alpha \leq
+                    \omega\)</span>, <span
+                    class="math inline">\(\sum_{\beta \leq \gamma &lt;
+                    \alpha} \mu (s_{\gamma+1}, s_\gamma] = \mu
+                    (s_\alpha, s_\beta]\)</span>.</p>
+                    <p>We show this by transfinite induction on <span
+                    class="math inline">\(\alpha\)</span>. It is obvious
+                    for <span class="math inline">\(\alpha = 0\)</span>.
+                    </p>
+                    <p><u>Case<span class="math inline">\(\alpha =
+                    \alpha&#39; + 1\)</span>:</u> By induction
+                    hypothesis and definition of <span
+                    class="math inline">\(\mu\)</span>, one has <span
+                    class="math display">\[LHS = \sum_{\beta \leq \gamma
+                    &lt; \alpha&#39;} \mu (s_{\gamma+1}, s_\gamma]
+                          + \mu (s_{\alpha&#39;+1}, s_{\alpha&#39;}]
+                          = \mu (s_{\alpha&#39;}, s_\beta] + \mu
+                    (s_{\alpha&#39;+1}, s_{\alpha&#39;}]
+                          = \mu (s_{\alpha&#39;+1},
+                    s_\beta].\]</span></p>
+                    <p></p>
+                    <p><u>Case<span
+                    class="math inline">\(\alpha\)</span> is a limit
+                    ordinal:</u> Countable limit ordinals have
+                    cofinality <span
+                    class="math inline">\(\omega_0\)</span>, i.e., there
+                    is a sequence <span
+                    class="math inline">\((\alpha_j)\)</span> increasing
+                    to <span class="math inline">\(\alpha\)</span>. We
+                    may add <span class="math inline">\(\alpha_0 =
+                    0\)</span> without losing generality. Then, <span
+                    class="math display">\[LHS = \sum_{j=0}^\infty
+                    \sum_{\alpha_j \leq \gamma &lt; \alpha_{j+1}} \mu
+                    (s_{\gamma+1}, s_\gamma]
+                          = \sum_{j=0}^\infty \mu (s_{\alpha_{j+1}},
+                    s_{\alpha_j}]
+                          = \mu (s_\alpha, s_\beta]\]</span> where the
+                    last summation follows by right-continuity of <span
+                    class="math inline">\(F\)</span>.</p>
+                    <p> ◻</p>
+                    </div>
+                    <p>By Theorem <span
+                    class="math inline">\(\ref{premeasure-induced-measure}\)</span>,
+                    premeasure defined above induces a unique measure
+                    associated with <span
+                    class="math inline">\(F\)</span>.</p>
+                    <div class="definition">
+                    <p><strong>Definition 15</strong>. The unique
+                    induced measure is called the
+                    <strong>Lebesgue-Stieltjes measure</strong>
+                    associated with <span
+                    class="math inline">\(F\)</span>, often denoted
+                    <span class="math inline">\(\mu_F\)</span>.</p>
+                    </div>
+                    <div class="proposition">
+                    <p><strong>Proposition 8</strong>. <em>The above
+                    measure <span class="math inline">\(\mu\)</span>
+                    satisfies</em></p>
+                    <ol>
+                    <li><p><em>(Outer regularity) <span
+                    class="math inline">\(\mu(E) = \inf \{ \mu(U) : U
+                    \supset E \text{ open} \}\)</span>.</em></p></li>
+                    <li><p><em>(Inner regularity) <span
+                    class="math inline">\(\mu(E) = \sup \{ \mu(K) : K
+                    \subset E \text{ compact} \}\)</span>.</em></p></li>
+                    </ol>
+                    </div>
+                    <div class="proof">
+                    <p><em>Proof.</em> Notice any open set is a
+                    countable union of open intervals. ◻</p>
+                    </div>
                     <h1 id="integration">Integration</h1>
                     <h2 id="nonnegative-integration">Nonnegative
                     Integration</h2>
@@ -509,20 +853,18 @@
                     class="math inline">\((X, \mathcal{M})\)</span>, and
                     a measure <span class="math inline">\(\mu :
                     \mathcal{F} \to [0, \infty]\)</span>. We may
-                    consider <span
-                    class="math display">\[\begin{array}{cccc}
-                        \tilde{\mu}: &amp; [0, \infty]
-                    \otimes_\mathbb{N}\mathcal{F} &amp; \rightarrow
-                    &amp; [0, \infty] \\
-                        &amp; r \otimes f &amp; \mapsto &amp; r \cdot
-                    \mu(f) \\
-                      \end{array}\]</span> which we may denote <span
+                    consider <span class="math display">\[\begin{matrix}
+                        \tilde{\mu} : &amp; [0, \infty]
+                    \otimes_\mathbb{N}\mathcal{F} &amp; \to &amp; [0,
+                    \infty] \\
+                                      &amp; r \otimes f &amp; \mapsto
+                    &amp; r \cdot \mu(f)
+                      \end{matrix}\]</span> which we may denote <span
                     class="math inline">\(\int d\mu\)</span> instead, or
                     <span class="math inline">\(\int f :=
-                    \tilde{\mu}(f)\)</span> if the measure is
-                    obvious.</p>
+                    \tilde{\mu}(f)\)</span> if the measure is clear.</p>
                     <div class="remark">
-                    <p><em>Remark 6</em>. <span
+                    <p><em>Remark 8</em>. <span
                     class="math inline">\(\tilde{\mu}\)</span> is
                     linear, i.e., <span class="math inline">\(\int (f +
                     g) = \int f + \int g\)</span> and <span
@@ -530,28 +872,29 @@
                     It also retains the continuity from below.</p>
                     </div>
                     <div class="remark">
-                    <p><em>Remark 7</em>. There is the natural injection
+                    <p><em>Remark 9</em>. There is the natural injection
                     <span class="math inline">\([0, \infty]
                     \otimes_\mathbb{N}\mathcal{F} \hookrightarrow
-                    \hom(X, [0, \infty])\)</span>. A function in its
-                    image is called a <strong>simple function</strong>,
-                    which is a linear combination of index
-                    functions.</p>
+                    \mathop{\mathrm{Hom}}(X, [0, \infty])\)</span>. A
+                    function in its image is called a <strong>simple
+                    function</strong>, which is a linear combination of
+                    index functions.</p>
                     </div>
                     <div class="theorem">
-                    <p><strong>Theorem 7</strong>. <em><span
+                    <p><strong>Theorem 9</strong>. <em><span
                     class="math inline">\(\tilde{\mu}\)</span> extends
                     naturally to countably additive <span
-                    class="math display">\[\int d \mu : \hom(X, [0,
-                    \infty]) \to [0, \infty].\]</span></em></p>
+                    class="math display">\[\int d \mu :
+                    \mathop{\mathrm{Hom}}(X, [0, \infty]) \to [0,
+                    \infty].\]</span></em></p>
                     </div>
                     <div class="proof">
                     <p><em>Proof.</em> </p>
                     <p><strong>Step 1: Uniqueness of possible
                     extension</strong></p>
                     <p>It suffices to show <span class="math inline">\(f
-                    \in \hom(X, [0, \infty])\)</span> is a countable sum
-                    of <span
+                    \in \mathop{\mathrm{Hom}}(X, [0, \infty])\)</span>
+                    is a countable sum of <span
                     class="math inline">\(\mathbb{R}\)</span>-multiple
                     of indicator functions, since countable additivity
                     determines <span class="math inline">\(\int f
@@ -580,6 +923,10 @@
                     <span class="math inline">\(\lim_{i \to \infty} \int
                     \varphi_i\)</span> is independent of choice of <span
                     class="math inline">\((\varphi_i)\)</span>.</p>
+                    <p></p>
+                    <p><u>Claim:</u> <span class="math inline">\(\lim_i
+                    \int \varphi_i = \sup_{\psi \leq f} \int
+                    \psi\)</span>.</p>
                     <p>Fix <span class="math inline">\(\psi \leq
                     f\)</span> and <span class="math inline">\(\alpha
                     \in (0, 1)\)</span>. Let <span
@@ -614,7 +961,7 @@
                     <p>Countable additivity gives the following as a
                     direct corollary.</p>
                     <div class="corollary">
-                    <p><strong>Corollary 8</strong> (Monotone
+                    <p><strong>Corollary 10</strong> (Monotone
                     Convergence Theorem). <em>If <span
                     class="math inline">\(f_n \uparrow f\)</span> for
                     measurable functions, one has <span
@@ -631,8 +978,8 @@
                     extend integration onto these, at loss of
                     integrability.</p>
                     <div class="proposition">
-                    <p><strong>Proposition 9</strong>. <em>For <span
-                    class="math inline">\(f \in \hom(X,
+                    <p><strong>Proposition 11</strong>. <em>For <span
+                    class="math inline">\(f \in \mathop{\mathrm{Hom}}(X,
                     \mathbb{R})\)</span>,</em></p>
                     </div>
                     <h1 id="product-measure">Product Measure</h1>
